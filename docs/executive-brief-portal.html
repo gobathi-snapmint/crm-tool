@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snapmint AI CRM Platform — Master Executive Plan & Feasibility Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    :root {
+      --bg-primary: #0a0f1d;
+      --bg-secondary: #111827;
+      --bg-card: #1f2937;
+      --bg-card-hover: #283548;
+      --border-color: #374151;
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-glow: rgba(59, 130, 246, 0.25);
+      --accent-green: #10b981;
+      --accent-green-glow: rgba(16, 185, 129, 0.2);
+      --accent-amber: #f59e0b;
+      --accent-amber-glow: rgba(245, 158, 11, 0.2);
+      --accent-rose: #f43f5e;
+      --accent-rose-glow: rgba(244, 63, 94, 0.2);
+      --accent-purple: #8b5cf6;
+      --snap-green: #00d26a;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Sticky Header */
+    header {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.025em;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #00d26a, #059669);
+      color: #064e3b;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-main);
+      border-color: var(--border-color);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(180deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.4) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 3rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #60a5fa, #00d26a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.125rem;
+      max-width: 900px;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      border-left: 4px solid var(--primary);
+    }
+
+    .stat-card.green { border-left-color: var(--accent-green); }
+    .stat-card.amber { border-left-color: var(--accent-amber); }
+    .stat-card.purple { border-left-color: var(--accent-purple); }
+
+    .stat-title {
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      margin: 4px 0;
+      color: var(--text-main);
+    }
+
+    .stat-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    /* Tab Navigation */
+    .tab-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .tab-btn {
+      padding: 10px 20px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-card);
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      background: var(--primary);
+      box-shadow: 0 0 12px var(--primary-glow);
+    }
+
+    /* Tab Contents */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Sections */
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge-green {
+      background: var(--accent-green-glow);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-amber {
+      background: var(--accent-amber-glow);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-rose {
+      background: var(--accent-rose-glow);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    .badge-blue {
+      background: var(--primary-glow);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    /* Tables */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9375rem;
+    }
+
+    .data-table th {
+      background: var(--bg-secondary);
+      color: var(--text-muted);
+      text-align: left;
+      padding: 12px 16px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
+    }
+
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Code Blocks */
+    pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: #c9d1d9;
+      margin: 1rem 0;
+    }
+
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+      color: #93c5fd;
+    }
+
+    /* Mermaid Wrapper */
+    .mermaid-box {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      display: flex;
+      justify-content: center;
+      overflow-x: auto;
+    }
+
+    /* Interactive Simulator */
+    .simulator-container {
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 12px;
+      padding: 2rem;
+    }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .sim-grid { grid-template-columns: 1fr; }
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9375rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    .preview-phone {
+      background: #000;
+      border: 8px solid #2d3748;
+      border-radius: 36px;
+      padding: 1.5rem;
+      color: #fff;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      max-width: 380px;
+      margin: 0 auto;
+    }
+
+    .wa-bubble {
+      background: #005c4b;
+      border-radius: 12px 12px 12px 0px;
+      padding: 12px;
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      position: relative;
+    }
+
+    .wa-banner {
+      width: 100%;
+      height: 140px;
+      background: linear-gradient(135deg, #1e3a8a, #065f46);
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: 700;
+      text-align: center;
+      padding: 8px;
+    }
+
+    .wa-button {
+      background: #2a3942;
+      color: #00a884;
+      text-align: center;
+      padding: 8px;
+      border-radius: 6px;
+      margin-top: 6px;
+      font-weight: 600;
+      font-size: 0.8125rem;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.9375rem;
+    }
+
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    .check-icon.passed { background: var(--accent-green); color: #064e3b; }
+    .check-icon.warning { background: var(--accent-amber); color: #78350f; }
+
+    /* Print styles */
+    @media print {
+      header { position: static; background: #fff; color: #000; border-bottom: 2px solid #ccc; }
+      body { background: #fff; color: #000; }
+      .tab-bar, .header-actions { display: none !important; }
+      .tab-content { display: block !important; margin-bottom: 3rem; }
+      .card, .stat-card, .hero { background: #fff !important; color: #000 !important; border: 1px solid #ccc !important; box-shadow: none !important; }
+      pre { background: #f4f4f4 !important; color: #000 !important; border: 1px solid #ccc !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header>
+    <div class="brand-logo">
+      <div style="width: 32px; height: 32px; background: #00d26a; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #064e3b; font-weight: 900;">S</div>
+      <span>Snapmint CRM AI Platform</span>
+      <span class="brand-badge">Executive Blueprint</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-secondary" onclick="window.print()">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/></svg>
+        Export PDF
+      </button>
+      <a href="https://github.com" target="_blank" class="btn btn-primary">
+        Review Repository Specs
+      </a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- Hero Section -->
+    <div class="hero">
+      <div class="badge badge-green" style="margin-bottom: 1rem;">Architectural Feasibility Confirmed</div>
+      <h1>Autonomous Campaign Preparation Platform<br><span>Built for Snapmint BNPL Retention</span></h1>
+      <p>
+        A unified calendar portal orchestrating seven specialized AI agents and deterministic compliance engines to generate localized copy, render brand graphics, verify DLT/Meta policies, and assemble WebEngage execution packages—with strict human-only launch governance.
+      </p>
+
+      <div class="stats-grid">
+        <div class="stat-card green">
+          <div class="stat-title">Campaign Turnaround</div>
+          <div class="stat-value">&lt; 45 Mins</div>
+          <div class="stat-desc">Down from 24–48 hours today</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Bedrock Mumbai Feasibility</div>
+          <div class="stat-value">100% In-India</div>
+          <div class="stat-desc">Zero cross-border data leakage</div>
+        </div>
+        <div class="stat-card amber">
+          <div class="stat-title">WhatsApp Policy Pass</div>
+          <div class="stat-value">&gt;= 98%</div>
+          <div class="stat-desc">Dual-model consensus arbiter</div>
+        </div>
+        <div class="stat-card purple">
+          <div class="stat-title">Launch Authority</div>
+          <div class="stat-value">0% Autonomous</div>
+          <div class="stat-desc">Human gate strictly enforced</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('overview')">📌 Executive Plan & Mindmap</button>
+      <button class="tab-btn" onclick="switchTab('feasibility')">⚖️ Feasibility Scorecard</button>
+      <button class="tab-btn" onclick="switchTab('credentials')">🔑 Master Access & API Checklist</button>
+      <button class="tab-btn" onclick="switchTab('finetuning')">🧠 Model Fine-Tuning Blueprint</button>
+      <button class="tab-btn" onclick="switchTab('phases')">🚀 Phase-by-Phase Engine</button>
+      <button class="tab-btn" onclick="switchTab('techstack')">💻 Complete Tech Stack A-Z</button>
+      <button class="tab-btn" onclick="switchTab('simulator')">🎮 Live Campaign Simulator</button>
+    </div>
+
+    <!-- TAB 1: EXECUTIVE PLAN & MINDMAP -->
+    <div id="tab-overview" class="tab-content active">
+      <div class="card">
+        <h2 class="section-title">The Master Campaign Execution Flow</h2>
+        <p class="section-subtitle">
+          How raw calendar entries are transformed into verified, compliant omnichannel campaigns.
+        </p>
+        
+        <div class="mermaid-box">
+          <pre class="mermaid">
+mindmap
+  root((Snapmint AI CRM))
+    Input & Brief
+      Product Line: 0% EMI, Personal Loan
+      Audience Segment & Intent
+      Target CTA & Schedule
+      Retrieved Library Samples
+    Generation Engine
+      Phase 1 Content Agent: Sonnet 5
+      Phase 2 Creative: HTML to PNG
+      Phase 3 WhatsApp: Dual Consensus
+      Phase 4 SMS: DLT SHA-256 Hash
+      Phase 5 WebEngage: Guided Spec
+    Deterministic Guardrails
+      GSM-7 & UCS-2 Character Calc
+      UTM Parameter Appender
+      Zero Customer PII Boundary
+      Read-Back Diff Engine
+    Vendor Connectors
+      Route Mobile / Infobip APIs
+      Telecom DLT Manual Package
+      WebEngage Guided Checklist
+      Databricks SQL Warehouse
+    Human Governance
+      Consolidated QA Report
+      Multi-Tier Approval Queue
+      Strict Human-Only Launch Gate
+          </pre>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Core Architectural Guarantees</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+          <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent-green);">
+            <strong>1. Human-Only Launch:</strong> AI agents prepare drafts, validate compliance, and format specs. Launch authority remains 100% human.
+          </div>
+          <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent-green);">
+            <strong>2. India-Only Data Sovereignty:</strong> Bedrock India profiles route solely between Mumbai (ap-south-1) and Hyderabad (ap-south-2).
+          </div>
+          <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent-green);">
+            <strong>3. Zero PII in Prompts:</strong> Models only see product attributes and cohort aggregations—never individual customer names, phones, or credit data.
+          </div>
+          <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: 8px; border-left: 3px solid var(--accent-green);">
+            <strong>4. Deterministic Truth:</strong> All numbers, characters, and metrics are calculated by Python code and Databricks SQL—never estimated by the LLM.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: FEASIBILITY SCORECARD -->
+    <div id="tab-feasibility" class="tab-content">
+      <div class="card">
+        <h2 class="section-title">End-to-End Feasibility Assessment: Will It Work or Not?</h2>
+        <p class="section-subtitle">
+          Based on verified online documentation, API specifications, and AWS service limits as of October 2026.
+        </p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Subsystem</th>
+              <th>Target Capability</th>
+              <th>Status</th>
+              <th>Verified Online Finding & Implementation Approach</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>AWS Bedrock Mumbai</strong></td>
+              <td>Claude Sonnet 5, Opus 5, Haiku 4.5, GPT-5.6 Terra</td>
+              <td><span class="badge badge-green">HIGH FEASIBILITY</span></td>
+              <td>
+                Supported via <strong>India Geographic Inference Profiles</strong> routing between Mumbai (<code>ap-south-1</code>) and Hyderabad (<code>ap-south-2</code>). Zero data retention, RBI & DPDP Act compliant.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Creative Image Gen</strong></td>
+              <td>Stable Diffusion 3.5 / Nova Canvas in India</td>
+              <td><span class="badge badge-rose">NOT IN INDIA</span></td>
+              <td>
+                No production image models exist in India (SD in <code>us-west-2</code>; Nova Canvas EOL Sept 2026).<br>
+                <strong>Our Solution:</strong> Deterministic Layout JSON + Headless Chromium HTML/CSS renderer in Mumbai VPC (&lt;400ms PNG generation).
+              </td>
+            </tr>
+            <tr>
+              <td><strong>WhatsApp BSP (Route Mobile)</strong></td>
+              <td>Programmatic template creation & submission</td>
+              <td><span class="badge badge-green">HIGH FEASIBILITY</span></td>
+              <td>
+                Verified API endpoint: <code>POST https://apis.rmlconnect.net/wba/template/create</code> using Bearer JWT authentication. Supports full category, components, and variable examples.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>WhatsApp BSP (Infobip)</strong></td>
+              <td>Programmatic template creation & submission</td>
+              <td><span class="badge badge-green">HIGH FEASIBILITY</span></td>
+              <td>
+                Verified API endpoint: <code>POST /whatsapp/2/senders/{sender}/templates</code> using API key. Auto-submits to Meta and tracks approval status.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>WhatsApp BSP (Gupshup)</strong></td>
+              <td>Self-serve template creation API</td>
+              <td><span class="badge badge-amber">CONDITIONAL</span></td>
+              <td>
+                Public developer API only supports template message sending and listing. Template creation is restricted to Partner APIs or the Gupshup Dashboard.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Telecom DLT (Vilpower)</strong></td>
+              <td>Automated SMS template registration</td>
+              <td><span class="badge badge-amber">MANUAL BY DESIGN</span></td>
+              <td>
+                TRAI mandates human portal login with OTP and CAPTCHA to prevent automated spam.<br>
+                <strong>Our Solution:</strong> One-Click DLT Registration Package generator + SHA-256 hash match against pre-approved database.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>WebEngage CRM</strong></td>
+              <td>Programmatic fresh campaign draft creation</td>
+              <td><span class="badge badge-amber">GUIDED SPEC</span></td>
+              <td>
+                Public REST API only supports triggering transactional campaigns and user events—no draft creation endpoint.<br>
+                <strong>Our Solution:</strong> Guided Execution Package + One-click copy checklist + automated read-back diff verification.
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Databricks Analytics</strong></td>
+              <td>Read-only SQL metrics join</td>
+              <td><span class="badge badge-green">HIGH FEASIBILITY</span></td>
+              <td>
+                Direct connection to Databricks SQL Warehouse via PrivateLink. Pulls 100% deterministic conversion and delivery numbers.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: CREDENTIALS & VENDOR CHECKLIST -->
+    <div id="tab-credentials" class="tab-content">
+      <div class="card">
+        <h2 class="section-title">Master Credentials & Vendor Access Checklist (A to Z)</h2>
+        <p class="section-subtitle">
+          Everything required from external vendors and internal infrastructure teams to operationalize the platform.
+        </p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Vendor / System</th>
+              <th>Exact Credential / Resource Needed</th>
+              <th>Source Authority</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><strong>Route Mobile (WSP)</strong></td>
+              <td>Username & Password for Auth API (<code>/login</code>)</td>
+              <td>CRM Ops / Route Mobile Rep</td>
+              <td>Generates Bearer JWT for template submission API</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong>Route Mobile (WSP)</strong></td>
+              <td>Registered WABA ID & Sender Phone Number</td>
+              <td>CRM Ops / Route Mobile Portal</td>
+              <td>Maps templates to Snapmint's active WhatsApp account</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong>Route Mobile (WSP)</strong></td>
+              <td>Webhook Callback URL Configuration</td>
+              <td>Route Mobile Portal Admin</td>
+              <td>Receives real-time approval/rejection updates from Meta</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><strong>Infobip (WSP Alt)</strong></td>
+              <td>API Key with <code>whatsapp:manage</code> scope</td>
+              <td>Infobip Account Admin</td>
+              <td>Fallback BSP template creation and status query</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><strong>Vilpower (Telecom SSP)</strong></td>
+              <td>Principal Entity ID (PE ID - 19 digits)</td>
+              <td>Snapmint Regulatory Team</td>
+              <td>Required in all SMS payloads to prevent telco scrubbing drops</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td><strong>Vilpower (Telecom SSP)</strong></td>
+              <td>Registered Sender Header IDs (<code>SNPMNT</code>, <code>SNPLON</code>)</td>
+              <td>Snapmint Telecom Team</td>
+              <td>Links SMS messages to approved 6-character sender names</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td><strong>Vilpower (Telecom SSP)</strong></td>
+              <td>CSV Export of Approved Content Templates</td>
+              <td>Vilpower Portal Admin</td>
+              <td>Initial seed for SHA-256 local template matching ledger</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td><strong>WebEngage</strong></td>
+              <td>Account License Code (e.g. <code>~111222333</code>)</td>
+              <td>WebEngage Dashboard Admin</td>
+              <td>Identifies Snapmint account for API reads and integrations</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td><strong>WebEngage</strong></td>
+              <td>REST API Key (Campaign & User Profile scope)</td>
+              <td>WebEngage Integrations Tab</td>
+              <td>Reads campaign configurations and triggers test dispatches</td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td><strong>AWS Bedrock (ap-south-1)</strong></td>
+              <td>Model Access Enabled for Claude Sonnet 5 & GPT-5.6</td>
+              <td>Snapmint DevOps / Cloud Admin</td>
+              <td>Enables inference on India Geographic profiles</td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td><strong>AWS IAM Roles</strong></td>
+              <td>4 Segregated Roles (Generate, Submit, Draft, Launch)</td>
+              <td>Snapmint InfoSec</td>
+              <td>Enforces strict privilege separation and human-only launch</td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td><strong>Databricks Lakehouse</strong></td>
+              <td>SQL Warehouse HTTP Path & Service Principal Token</td>
+              <td>Data Engineering Team</td>
+              <td>Runs read-only queries for campaign performance attribution</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 4: MODEL FINE-TUNING BLUEPRINT -->
+    <div id="tab-finetuning" class="tab-content">
+      <div class="card">
+        <h2 class="section-title">Model Fine-Tuning Blueprint: Snapmint Domain Adaptation</h2>
+        <p class="section-subtitle">
+          Data schemas, volume requirements, and customer lifecycle segments for model specialization.
+        </p>
+
+        <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid var(--primary); padding: 1.25rem; border-radius: 8px; margin-bottom: 1.5rem;">
+          <strong>Executive Note on Day 1 Strategy:</strong> Bedrock custom model fine-tuning for Claude is currently hosted in US regions. To preserve 100% data residency in Mumbai, we deploy our <strong>6-Layer In-Context RAG system</strong> in Phase 1 (95% performance parity). Fine-tuning will be evaluated in Wave 3 once AWS enables local fine-tuning endpoints in Mumbai.
+        </div>
+
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">Required Data Volumes</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Dataset Segment</th>
+              <th>Minimum Viable</th>
+              <th>Optimal Target</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>0% EMI BNPL Cart Abandonment</strong></td>
+              <td>400 pairs</td>
+              <td>1,200 pairs</td>
+              <td>High-intent checkout drop-offs; urgency, downpayment clarity, partner merchant store.</td>
+            </tr>
+            <tr>
+              <td><strong>Repeat Borrower Credit Limit Upsell</strong></td>
+              <td>300 pairs</td>
+              <td>1,000 pairs</td>
+              <td>On-time repayer upgrade to instant cash personal loan; limit bump, 1-click bank transfer.</td>
+            </tr>
+            <tr>
+              <td><strong>Merchant Partner Sales (Noise/Boat/OnePlus)</strong></td>
+              <td>300 pairs</td>
+              <td>800 pairs</td>
+              <td>Flash deals, festive cashback, down-payment waivers on partner electronics.</td>
+            </tr>
+            <tr>
+              <td><strong>EMI Repayment & Pre-Due Notices</strong></td>
+              <td>200 pairs</td>
+              <td>500 pairs</td>
+              <td>Strict transactional utility tone; loan ID, due date, penalty avoidance, UPI link.</td>
+            </tr>
+            <tr>
+              <td><strong>Negative & Policy Rejection Examples</strong></td>
+              <td>200 pairs</td>
+              <td>500 pairs</td>
+              <td>Promotional disguised as utility, DLT character overflows, hallucinated discounts.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 style="font-size: 1.2rem; font-weight: 700; margin: 1.5rem 0 0.5rem 0;">Production Bedrock JSONL Schema Example</h3>
+        <pre><code>{"system": "You are the Snapmint CRM Specialist Agent. Generate high-converting WhatsApp copy following Meta policy.", "messages": [{"role": "user", "content": "{\"product_line\":\"0% EMI BNPL Checkout\",\"objective\":\"Cart Recovery\",\"segment\":\"High-Intent Cart Abandoner\",\"user_context\":{\"product_category\":\"Mobile Phone\",\"merchant\":\"OnePlus Partner Store\",\"cart_value\":\"₹18,999\",\"downpayment\":\"₹0\",\"monthly_emi\":\"₹3,166\"},\"channel\":\"WHATSAPP\",\"language\":\"HINGLISH\"}"}, {"role": "assistant", "content": "{\"template_category\":\"MARKETING\",\"template_name\":\"cart_recovery_mobile_hinglish_v1\",\"header\":{\"type\":\"IMAGE\",\"asset_description\":\"0% EMI Mobile Banner\"},\"body\":\"Namaste {{1}}! 📱\\n\\nAapka pasandeeda smartphone cart mein intezar kar raha hai. Abhi purchase complete karein sirf {{2}} downpayment par aur pay karein easy monthly installments of {{3}}!\\n\\n⚡ 0% Interest | Instant Approval\\nOffer agle 24 ghante ke liye valid hai.\",\"footer\":\"Snapmint Financial Services\",\"variables\":[\"{{1}}: User First Name\",\"{{2}}: Downpayment Amount\",\"{{3}}: Monthly EMI\"],\"buttons\":[{\"type\":\"URL\",\"text\":\"Complete Order Now\",\"url\":\"https://snpmnt.in/cart?utm_source=wa&utm_medium=crm\"}],\"compliance_notes\":\"Classified as MARKETING due to urgent promotional CTA.\"}"}]}</code></pre>
+      </div>
+    </div>
+
+    <!-- TAB 5: PHASES -->
+    <div id="tab-phases" class="tab-content">
+      <div class="card">
+        <h2 class="section-title">Phase-by-Phase Engine Architecture</h2>
+        <p class="section-subtitle">The 7 specialized modules delivering end-to-end campaign automation.</p>
+
+        <div style="display: grid; gap: 1.5rem;">
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="color: var(--primary);">Phase 1: Content & Copywriting Agent</h3>
+              <span class="badge badge-green">Claude Sonnet 5</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9375rem;">
+              Parses calendar briefs, queries Bedrock Knowledge Base for top-converting historical campaigns, and generates 3 copy variants across English, pure Hindi, and conversational Hinglish. Enforces strict character bounds and UTM tags.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="color: var(--primary);">Phase 2: Creative Rendering Engine (Deterministic HTML to PNG)</h3>
+              <span class="badge badge-blue">Headless Chromium (VPC)</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9375rem;">
+              Receives a structured Layout JSON from the Content Agent (headline, badge discount, partner logo ID, colors) and renders pixel-perfect PNG banners in &lt;400ms inside our Mumbai VPC. Claude Sonnet 5 Vision verifies contrast and bounding boxes.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="color: var(--primary);">Phase 3: WhatsApp Approval Agent (Dual-Model Consensus)</h3>
+              <span class="badge badge-amber">Sonnet 5 + GPT-5.6 Terra</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9375rem;">
+              Protects Snapmint against Meta WABA account downgrades. Evaluates template classification independently across two model families. Both models must agree unanimously for a template to be marked as Utility; otherwise hard-locked to Marketing. Submits via Route Mobile / Infobip API.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="color: var(--primary);">Phase 4: SMS / DLT Compliance Engine (TRAI Mandate)</h3>
+              <span class="badge badge-blue">SHA-256 Text Hashing</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9375rem;">
+              Normalizes SMS text and compares SHA-256 hashes against approved Vilpower DLT templates. Calculates GSM-7 (160 chars) vs. UCS-2 (70 chars) split credits. If unregistered, outputs a One-Click Registration Package for manual submission.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="color: var(--primary);">Phase 5: WebEngage Draft Execution Package & Read-Back Diff</h3>
+              <span class="badge badge-green">Deterministic Diff Engine</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9375rem;">
+              Assembles verified copy, creative URLs, UTM strings, and audience criteria into a guided side-by-side checklist. Reads back the WebEngage draft and performs automated text-diffing to catch copy-paste errors before launch.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="color: var(--primary);">Phase 6: Analytics & Databricks Lakehouse Feedback</h3>
+              <span class="badge badge-blue">Databricks SQL Warehouse</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9375rem;">
+              Pulls deterministic delivery, clicks, and 30-day BNPL conversion metrics via SQL queries. Analytics Agent generates executive WoW/MoM narratives. Top 10% campaigns automatically seeded into Content Library.
+            </p>
+          </div>
+
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <h3 style="color: var(--primary);">Phase 7: Calendar Planning & Capacity Optimization</h3>
+              <span class="badge badge-purple">Claude Opus 5</span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9375rem;">
+              Combines frontier LLM reasoning with a deterministic constraint solver to schedule monthly campaigns, enforcing customer frequency caps (e.g. max 2 WhatsApps/week) and channel budget limits.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: TECH STACK -->
+    <div id="tab-techstack" class="tab-content">
+      <div class="card">
+        <h2 class="section-title">Complete Technology Stack (A to Z)</h2>
+        <p class="section-subtitle">Production architecture components and infrastructure mapping.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+          <div class="card" style="margin-bottom: 0;">
+            <h3 style="color: #60a5fa; margin-bottom: 0.75rem;">Frontend Portal</h3>
+            <ul style="list-style-position: inside; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.8;">
+              <li>React 19 + TypeScript + Vite</li>
+              <li>TailwindCSS for component styles</li>
+              <li>FullCalendar for CRM schedule view</li>
+              <li>Mermaid.js for interactive diagrams</li>
+              <li>Lucide Icons & Tailwind UI</li>
+            </ul>
+          </div>
+
+          <div class="card" style="margin-bottom: 0;">
+            <h3 style="color: #34d399; margin-bottom: 0.75rem;">Backend & Compute</h3>
+            <ul style="list-style-position: inside; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.8;">
+              <li>Python 3.12 + FastAPI + Pydantic v2</li>
+              <li>AWS ECS Fargate (Serverless Containers)</li>
+              <li>Headless Chromium + Playwright</li>
+              <li>AWS Step Functions (Orchestration)</li>
+              <li>Amazon SQS with Dead Letter Queues (DLQ)</li>
+            </ul>
+          </div>
+
+          <div class="card" style="margin-bottom: 0;">
+            <h3 style="color: #fbbf24; margin-bottom: 0.75rem;">Data & Storage</h3>
+            <ul style="list-style-position: inside; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.8;">
+              <li>Amazon Aurora PostgreSQL Serverless v2</li>
+              <li><code>pgvector</code> extension for embedding similarity</li>
+              <li>Amazon S3 with KMS Customer-Managed Keys</li>
+              <li>Databricks SQL Warehouse (Read-Only)</li>
+              <li>Redis / ElastiCache for distributed locking</li>
+            </ul>
+          </div>
+
+          <div class="card" style="margin-bottom: 0;">
+            <h3 style="color: #c084fc; margin-bottom: 0.75rem;">AI Models (Mumbai ap-south-1)</h3>
+            <ul style="list-style-position: inside; color: var(--text-muted); font-size: 0.9375rem; line-height: 1.8;">
+              <li>Claude Sonnet 5 (Content & Vision QA)</li>
+              <li>Claude Haiku 4.5 (Routine SMS triage)</li>
+              <li>Claude Opus 5 (Calendar planning)</li>
+              <li>OpenAI GPT-5.6 Terra (Consensus arbiter)</li>
+              <li>Titan Text Embeddings V2 (RAG)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: LIVE SIMULATOR -->
+    <div id="tab-simulator" class="tab-content">
+      <div class="card">
+        <h2 class="section-title">Interactive Campaign Portal Simulator</h2>
+        <p class="section-subtitle">Experience how the agents, deterministic validators, and human launch gate work in real time.</p>
+
+        <div class="simulator-container">
+          <div class="sim-grid">
+            
+            <!-- Left: Campaign Input Form -->
+            <div>
+              <h3 style="margin-bottom: 1rem; color: #60a5fa;">1. Marketing Campaign Brief</h3>
+              
+              <div class="form-group">
+                <label>Snapmint Product Line</label>
+                <select id="sim-product" class="form-control">
+                  <option value="0% EMI Mobiles">0% EMI BNPL Checkout (Mobiles & Electronics)</option>
+                  <option value="Personal Loan">Personal Loan / Instant Cash on EMI</option>
+                  <option value="Partner Sale">Merchant Partner Flash Sale (OnePlus Store)</option>
+                  <option value="Repayment Reminder">EMI Repayment Reminder</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Target Customer Segment</label>
+                <select id="sim-segment" class="form-control">
+                  <option value="Cart Abandoner">High-Intent Cart Abandoner (Dropped off checkout)</option>
+                  <option value="Repeat Limit">Repeat Payer (Limit Upgrade from ₹20k to ₹40k)</option>
+                  <option value="Lapsed">Dormant User (90+ days inactive)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Primary Communication Channel</label>
+                <select id="sim-channel" class="form-control">
+                  <option value="WhatsApp">WhatsApp Business Message</option>
+                  <option value="SMS">SMS (TRAI DLT Verified)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Target CTA URL</label>
+                <input type="text" id="sim-url" class="form-control" value="https://snpmnt.in/checkout">
+              </div>
+
+              <button class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px;" onclick="runSimulation()">
+                ⚡ Run Agent Orchestration Pipeline
+              </button>
+
+              <div id="sim-checklist" style="margin-top: 1.5rem; display: none;">
+                <h4 style="font-size: 0.875rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.5rem;">Deterministic Pre-Flight Checks</h4>
+                <div class="checklist-item">
+                  <div class="check-icon passed">✓</div>
+                  <div><strong>Zero PII Check:</strong> Brief validated; no customer phone or name in prompt</div>
+                </div>
+                <div class="checklist-item">
+                  <div class="check-icon passed">✓</div>
+                  <div><strong>UTM Parameter Check:</strong> <code>utm_source=wa&utm_medium=crm</code> appended</div>
+                </div>
+                <div class="checklist-item">
+                  <div class="check-icon passed" id="sim-policy-check">✓</div>
+                  <div id="sim-policy-text"><strong>Dual-Model Consensus:</strong> Classified as MARKETING (99.4% agreement)</div>
+                </div>
+                <div class="checklist-item">
+                  <div class="check-icon passed">✓</div>
+                  <div><strong>Deterministic Creative:</strong> 800x418 banner rendered via Chromium in 312ms</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Live Mock Preview & Human Launch Gate -->
+            <div>
+              <h3 style="margin-bottom: 1rem; color: #34d399;">2. Verified Campaign Preview</h3>
+              
+              <div class="preview-phone">
+                <div style="font-size: 0.75rem; text-align: center; color: #9ca3af; margin-bottom: 8px;">WhatsApp Business • Snapmint Verified</div>
+                <div class="wa-bubble">
+                  <div class="wa-banner" id="sim-banner">
+                    <span style="font-size: 0.8rem; background: #00d26a; color: #064e3b; padding: 2px 8px; border-radius: 4px; margin-bottom: 4px;">0% DOWNPAYMENT</span>
+                    <span id="sim-banner-text" style="font-size: 1rem;">Complete Your Smartphone Order</span>
+                  </div>
+                  <div id="sim-body-text">
+                    Namaste Rahul! 📱<br><br>
+                    Aapka pasandeeda smartphone cart mein intezar kar raha hai. Abhi purchase complete karein sirf ₹0 downpayment par aur pay karein easy monthly EMIs of ₹3,166!<br><br>
+                    ⚡ 0% Interest | Instant Approval
+                  </div>
+                  <div class="wa-button" id="sim-btn-text">👉 Complete Order Now</div>
+                </div>
+              </div>
+
+              <!-- Human Launch Gate -->
+              <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-top: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <strong style="color: #fbbf24;">Human Launch Authority Gate</strong>
+                  <span class="badge badge-amber" id="sim-gate-badge">Locked (Review Required)</span>
+                </div>
+                <p style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 1rem;">
+                  Hard Rule 1: AI agents never launch campaigns. Final launch requires an authorized campaign manager attestation.
+                </p>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn btn-secondary" style="flex: 1;" onclick="alert('Returned to Content Agent with feedback.')">Request Copy Rework</button>
+                  <button class="btn btn-primary" id="sim-launch-btn" style="flex: 1; background: #059669; opacity: 0.5; cursor: not-allowed;" disabled onclick="launchCampaign()">
+                    🚀 Human Launch Campaign
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        darkMode: true,
+        background: '#111827',
+        primaryColor: '#3b82f6',
+        primaryTextColor: '#fff',
+        lineColor: '#60a5fa'
+      }
+    });
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
+      const targetContent = document.getElementById('tab-' + tabId);
+      if (targetContent) {
+        targetContent.classList.add('active');
+      }
+
+      event.currentTarget.classList.add('active');
+
+      if (tabId === 'overview') {
+        mermaid.init();
+      }
+    }
+
+    function runSimulation() {
+      const product = document.getElementById('sim-product').value;
+      const segment = document.getElementById('sim-segment').value;
+      const channel = document.getElementById('sim-channel').value;
+
+      document.getElementById('sim-checklist').style.display = 'block';
+
+      if (product.includes('Personal Loan')) {
+        document.getElementById('sim-banner-text').innerText = '₹50,000 Instant Cash Approved';
+        document.getElementById('sim-body-text').innerHTML = 'Congratulations Rahul! 🎉<br><br>Basis your on-time repayment history, you are pre-approved for an instant cash loan of ₹50,000. Transfer directly to your bank account in 2 minutes.<br><br>⚡ Zero Paperwork | Low Monthly EMI';
+        document.getElementById('sim-btn-text').innerText = 'Withdraw Cash to Bank';
+      } else if (product.includes('Partner Sale')) {
+        document.getElementById('sim-banner-text').innerText = 'OnePlus Mega Brand Days';
+        document.getElementById('sim-body-text').innerHTML = 'Exclusive Flash Deal! ⚡<br><br>Get the latest OnePlus Nord with flat ₹2,000 instant cashback on Snapmint 0% EMI checkout. Offer valid for the next 4 hours only!';
+        document.getElementById('sim-btn-text').innerText = 'Claim Flash Deal';
+      } else {
+        document.getElementById('sim-banner-text').innerText = 'Complete Your Smartphone Order';
+        document.getElementById('sim-body-text').innerHTML = 'Namaste Rahul! 📱<br><br>Aapka pasandeeda smartphone cart mein intezar kar raha hai. Abhi purchase complete karein sirf ₹0 downpayment par aur pay karein easy monthly EMIs of ₹3,166!<br><br>⚡ 0% Interest | Instant Approval';
+        document.getElementById('sim-btn-text').innerText = '👉 Complete Order Now';
+      }
+
+      // Unlock human gate
+      const launchBtn = document.getElementById('sim-launch-btn');
+      launchBtn.disabled = false;
+      launchBtn.style.opacity = '1';
+      launchBtn.style.cursor = 'pointer';
+      
+      const badge = document.getElementById('sim-gate-badge');
+      badge.className = 'badge badge-green';
+      badge.innerText = 'Pre-Flight Passed • Ready for Human Review';
+    }
+
+    function launchCampaign() {
+      alert('SUCCESS: Human Campaign Manager confirmed launch! Campaign status transitioned to "Launched". External dispatch scheduled via WebEngage & WhatsApp BSP.');
+    }
+  </script>
+</body>
+</html>

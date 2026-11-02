@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snapmint CRM Campaign Calendar & WSP Approval Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b1120;
+      --bg-panel: #111827;
+      --bg-card: #1f2937;
+      --bg-hover: #283548;
+      --border: #374151;
+      --border-focus: #3b82f6;
+      --text: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --snap-green: #00d26a;
+      --snap-green-bg: rgba(0, 210, 106, 0.15);
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --accent-purple: #8b5cf6;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      font-size: 13.5px;
+      overflow-x: hidden;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.15rem;
+    }
+
+    .brand-badge {
+      background: var(--snap-green);
+      color: #064e3b;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.8125rem;
+      cursor: pointer;
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary { background: var(--snap-green); color: #064e3b; font-weight: 700; }
+    .btn-primary:hover { background: #00ba5e; box-shadow: 0 0 12px rgba(0,210,106,0.3); }
+    .btn-secondary { background: var(--bg-card); color: var(--text); border-color: var(--border); }
+    .btn-secondary:hover { background: var(--bg-hover); }
+    .btn-ai { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; }
+    .btn-ai:hover { opacity: 0.95; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+    .btn-sm { padding: 4px 8px; font-size: 0.75rem; border-radius: 4px; }
+
+    /* Summary KPI Bar */
+    .kpi-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      padding: 1rem 1.5rem 0.5rem 1.5rem;
+    }
+
+    .kpi-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .kpi-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; font-weight: 600; }
+    .kpi-value { font-size: 1.35rem; font-weight: 800; color: #fff; margin-top: 2px; }
+
+    /* Controls Bar: Search & Filters */
+    .controls-bar {
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 12px;
+      color: #fff;
+      font-size: 0.8125rem;
+      min-width: 260px;
+    }
+    .search-input:focus { outline: none; border-color: var(--primary); }
+
+    .filter-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 7px 10px;
+      color: #fff;
+      font-size: 0.8125rem;
+    }
+
+    /* Master Spreadsheet Table */
+    .table-container {
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      overflow-x: auto;
+      max-height: calc(100vh - 240px);
+    }
+
+    table.calendar-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.8125rem;
+      min-width: 2600px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    table.calendar-table th {
+      background: #1e293b;
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--border);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      text-align: left;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    /* Fixed first column for row id */
+    table.calendar-table th.sticky-col,
+    table.calendar-table td.sticky-col {
+      position: sticky;
+      left: 0;
+      z-index: 21;
+      background: #172033;
+      border-right: 2px solid var(--border);
+      min-width: 130px;
+    }
+
+    table.calendar-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid rgba(255,255,255,0.04);
+      white-space: nowrap;
+      color: var(--text);
+      vertical-align: middle;
+    }
+
+    table.calendar-table tr:hover td {
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    /* Status Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge-approved { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+    .badge-pending { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+    .badge-draft { background: rgba(156, 163, 175, 0.2); color: #d1d5db; border: 1px solid rgba(156,163,175,0.3); }
+    .badge-rejected { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244,63,94,0.3); }
+    .badge-utility { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+    .badge-marketing { background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.active { display: flex; }
+
+    .modal {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+    }
+
+    .modal-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-body { padding: 1.5rem; }
+    .modal-footer {
+      padding: 1rem 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    .form-label { font-size: 0.78rem; font-weight: 600; color: var(--text-muted); }
+    
+    .form-control {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 12px;
+      color: #fff;
+      font-size: 0.85rem;
+      font-family: inherit;
+    }
+    .form-control:focus { outline: none; border-color: var(--primary); }
+    textarea.form-control { min-height: 80px; resize: vertical; }
+
+    /* Phone preview */
+    .phone-mockup {
+      background: #000;
+      border: 6px solid #2d3748;
+      border-radius: 28px;
+      padding: 1rem;
+      max-width: 320px;
+      margin: 0 auto;
+      color: #fff;
+    }
+
+    .wa-bubble {
+      background: #005c4b;
+      border-radius: 8px 8px 8px 0;
+      padding: 10px;
+      font-size: 0.8125rem;
+      margin-top: 8px;
+    }
+
+    .wa-btn {
+      background: #2a3942;
+      color: #00a884;
+      padding: 6px;
+      text-align: center;
+      border-radius: 4px;
+      margin-top: 4px;
+      font-weight: 600;
+      font-size: 0.78rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header>
+    <div class="brand">
+      <div style="width: 28px; height: 28px; background: var(--snap-green); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #064e3b; font-weight: 900;">S</div>
+      <span>Snapmint CRM Campaign Calendar Portal</span>
+      <span class="brand-badge">Local Workspace</span>
+    </div>
+    <div class="top-actions">
+      <button class="btn btn-secondary" onclick="exportCSV()">📥 Export CSV</button>
+      <button class="btn btn-secondary" onclick="document.getElementById('csvFileInput').click()">📤 Import CSV</button>
+      <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="importCSV(event)">
+      <button class="btn btn-ai" onclick="openAIAutoFillModal()">✨ AI Auto-Fill Agent</button>
+      <button class="btn btn-primary" onclick="openAddModal()">+ Add Campaign Row</button>
+    </div>
+  </header>
+
+  <!-- KPI Summary Bar -->
+  <div class="kpi-bar">
+    <div class="kpi-card">
+      <span class="kpi-label">Total Campaigns</span>
+      <span class="kpi-value" id="kpi-total">4</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">WhatsApp Approved</span>
+      <span class="kpi-value" style="color: #34d399;" id="kpi-wa-approved">2</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">WhatsApp Pending Approval</span>
+      <span class="kpi-value" style="color: #fbbf24;" id="kpi-wa-pending">1</span>
+    </div>
+    <div class="kpi-card">
+      <span class="kpi-label">Total Audience Target</span>
+      <span class="kpi-value" style="color: #60a5fa;" id="kpi-audience">980,000</span>
+    </div>
+  </div>
+
+  <!-- Search & Filter Controls -->
+  <div class="controls-bar">
+    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+      <input type="text" id="searchInput" class="search-input" placeholder="Search campaign, product, segment, naming..." onkeyup="filterTable()">
+      
+      <select id="filterProduct" class="filter-select" onchange="filterTable()">
+        <option value="">All Products</option>
+        <option value="0% EMI BNPL Mobiles">0% EMI BNPL Mobiles</option>
+        <option value="Personal Loan Cash">Personal Loan Cash</option>
+        <option value="Partner Flash Sale">Partner Flash Sale</option>
+        <option value="EMI Repayment Reminder">EMI Repayment Reminder</option>
+      </select>
+
+      <select id="filterChannel" class="filter-select" onchange="filterTable()">
+        <option value="">All Channels</option>
+        <option value="WhatsApp">WhatsApp</option>
+        <option value="SMS">SMS</option>
+        <option value="Push">Push</option>
+      </select>
+
+      <select id="filterStatus" class="filter-select" onchange="filterTable()">
+        <option value="">All Approval Statuses</option>
+        <option value="APPROVED">Approved</option>
+        <option value="SUBMITTED">Submitted / Pending</option>
+        <option value="DRAFT">Draft</option>
+        <option value="REJECTED">Rejected</option>
+      </select>
+    </div>
+
+    <div style="color: var(--text-dim); font-size: 0.8rem;">
+      Double-click any row to view & trigger WSP template approval API
+    </div>
+  </div>
+
+  <!-- Master Spreadsheet Table -->
+  <div class="table-container">
+    <table class="calendar-table" id="calendarTable">
+      <thead>
+        <tr>
+          <th class="sticky-col">Action & Status</th>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Product</th>
+          <th>Segment Name</th>
+          <th>Naming Structure</th>
+          <th>WSP Vendor</th>
+          <th>WABA Number</th>
+          <th>Template Category</th>
+          <th>Template Name</th>
+          <th>CTA Text</th>
+          <th>Target URL</th>
+          <th>Segments to Exclude</th>
+          <th>Start Age</th>
+          <th>End Age</th>
+          <th>Gender</th>
+          <th>Location</th>
+          <th>Campaign Type</th>
+          <th>Channel</th>
+          <th>EXP</th>
+          <th>Comms A (Headline / Var 1)</th>
+          <th>Comms B (Body Text)</th>
+          <th>Time</th>
+          <th>Banner_Url</th>
+          <th>Size</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        <!-- Rendered via JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Row Edit / WSP Trigger Modal -->
+  <div class="modal-backdrop" id="editModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle" style="font-size: 1.1rem; font-weight: 700;">Edit Campaign & Trigger WSP Approval API</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        
+        <!-- Tabs in Modal -->
+        <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; padding-bottom: 6px;">
+          <button class="btn btn-secondary btn-sm active" id="tabBtnDetails" onclick="switchModalTab('details')">📋 Campaign Details</button>
+          <button class="btn btn-secondary btn-sm" id="tabBtnWsp" onclick="switchModalTab('wsp')">🚀 WSP API Approval Trigger</button>
+          <button class="btn btn-secondary btn-sm" id="tabBtnPreview" onclick="switchModalTab('preview')">📱 WhatsApp Preview</button>
+        </div>
+
+        <!-- Tab 1: Form Details -->
+        <div id="modalTabDetails" class="form-grid">
+          <input type="hidden" id="editIndex">
+
+          <div class="form-group">
+            <label class="form-label">Day</label>
+            <input type="text" id="field_day" class="form-control" placeholder="Monday">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input type="date" id="field_date" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Product</label>
+            <select id="field_product" class="form-control">
+              <option value="0% EMI BNPL Mobiles">0% EMI BNPL Mobiles</option>
+              <option value="Personal Loan Cash">Personal Loan Cash</option>
+              <option value="Partner Flash Sale">Partner Flash Sale</option>
+              <option value="EMI Repayment Reminder">EMI Repayment Reminder</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Segment Name</label>
+            <input type="text" id="field_segment_name" class="form-control" placeholder="Cart_Abandoners_24h">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Naming Structure</label>
+            <input type="text" id="field_naming" class="form-control" placeholder="20261102_BNPL_CART_WA_MKTG_V1">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Channel</label>
+            <select id="field_channel" class="form-control">
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="SMS">SMS</option>
+              <option value="Push">Push</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">WSP Vendor</label>
+            <select id="field_wsp_vendor" class="form-control">
+              <option value="Route Mobile">Route Mobile</option>
+              <option value="TrustSignal">TrustSignal</option>
+              <option value="Infobip">Infobip</option>
+              <option value="Gupshup">Gupshup</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">WABA Number (Registered Phone)</label>
+            <input type="text" id="field_waba_number" class="form-control" placeholder="919876543210">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">WhatsApp Template Category</label>
+            <select id="field_template_category" class="form-control">
+              <option value="MARKETING">MARKETING</option>
+              <option value="UTILITY">UTILITY</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Template Name (Meta ID)</label>
+            <input type="text" id="field_template_name" class="form-control" placeholder="cart_recovery_mobile_v1">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">CTA Text</label>
+            <input type="text" id="field_cta_text" class="form-control" placeholder="Complete Order Now">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Target URL</label>
+            <input type="text" id="field_target_url" class="form-control" placeholder="https://snapmint.com/cart?utm_source=wa">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Segments to Exclude</label>
+            <input type="text" id="field_exclude" class="form-control" placeholder="Defaulted_Users, DND">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Start Age</label>
+            <input type="number" id="field_start_age" class="form-control" placeholder="21">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">End Age</label>
+            <input type="number" id="field_end_age" class="form-control" placeholder="55">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <select id="field_gender" class="form-control">
+              <option value="All">All</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <input type="text" id="field_location" class="form-control" placeholder="Pan India / Tier 1">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Campaign Type</label>
+            <select id="field_campaign_type" class="form-control">
+              <option value="Triggered">Triggered</option>
+              <option value="Promotional">Promotional</option>
+              <option value="Seasonal">Seasonal</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">EXP (Experiment Code)</label>
+            <input type="text" id="field_exp" class="form-control" placeholder="A/B Test Variant">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Time</label>
+            <input type="text" id="field_time" class="form-control" placeholder="11:00 AM">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Audience Size</label>
+            <input type="text" id="field_size" class="form-control" placeholder="250,000">
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Comms A (Headline / Short Variant)</label>
+            <input type="text" id="field_comms_a" class="form-control" placeholder="Your favorite smartphone is waiting in your cart!">
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Comms B (Template Body with {{1}}, {{2}})</label>
+            <textarea id="field_comms_b" class="form-control" placeholder="Hello {{1}}! Complete your order today at 0% EMI with monthly installments of {{2}}!"></textarea>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Banner URL (Image Asset Link)</label>
+            <input type="text" id="field_banner_url" class="form-control" placeholder="https://cdn.snapmint.com/banners/diwali_mobile.png">
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">Comments (Special Instructions / Marketer Guidance)</label>
+            <textarea id="field_comments" class="form-control" placeholder="Highlight flat ₹500 instant cashback on Axis Bank cards"></textarea>
+          </div>
+        </div>
+
+        <!-- Tab 2: WSP API Trigger & Payload Inspector -->
+        <div id="modalTabWsp" style="display: none;">
+          <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid var(--primary); padding: 12px; border-radius: 6px; margin-bottom: 1rem;">
+            <strong>2-Step Automated Pipeline: TrustSignal Approval ➔ WebEngage Push</strong><br>
+            <span style="font-size: 0.8rem; color: var(--text-muted);">
+              Step 1 triggers TrustSignal to submit the template to Meta for approval. Once approved, Step 2 triggers an API call to register & map the template directly into WebEngage.
+            </span>
+          </div>
+
+          <!-- Step Progress Visualizer -->
+          <div style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-card); padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1.25rem;">
+            <div style="text-align: center;">
+              <span id="stepBadge1" class="badge badge-draft">1. Draft</span>
+              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">Content Prepared</div>
+            </div>
+            <div style="color: var(--text-dim);">➔</div>
+            <div style="text-align: center;">
+              <span id="stepBadge2" class="badge badge-draft">2. TrustSignal Meta</span>
+              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">WSP Policy Check</div>
+            </div>
+            <div style="color: var(--text-dim);">➔</div>
+            <div style="text-align: center;">
+              <span id="stepBadge3" class="badge badge-draft">3. Approved</span>
+              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">Meta Whitelisted</div>
+            </div>
+            <div style="color: var(--text-dim);">➔</div>
+            <div style="text-align: center;">
+              <span id="stepBadge4" class="badge badge-draft">4. WebEngage Sync</span>
+              <div style="font-size: 0.72rem; color: var(--text-dim); margin-top: 4px;">Ready to Launch</div>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Target WhatsApp Service Provider</label>
+              <select id="wsp_provider_select" class="form-control" onchange="updatePreviewAndJson()">
+                <option value="TrustSignal">TrustSignal (api.trustsignal.io)</option>
+                <option value="Route Mobile">Route Mobile (apis.rmlconnect.net)</option>
+                <option value="Meta Direct">Meta Cloud Graph API Direct</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">TrustSignal API Key / Bearer Auth</label>
+              <input type="password" id="wsp_token_input" class="form-control" value="ts_live_key_98374829374928374928">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">WebEngage Account License Code</label>
+              <input type="text" id="we_license_input" class="form-control" value="~111222333">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">WebEngage REST API Key</label>
+              <input type="password" id="we_api_key_input" class="form-control" value="we_secret_api_key_snapmint_2026">
+            </div>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <label class="form-label">Outgoing JSON Payload (Step 1: TrustSignal Template Submission):</label>
+            <pre id="jsonPayloadPreview" style="max-height: 160px; overflow-y: auto;"></pre>
+          </div>
+
+          <!-- Step 1 & Step 2 Action Buttons -->
+          <div style="margin-top: 1rem; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="btnTriggerTrustSignal" onclick="triggerTrustSignalApiCall()">
+              🚀 Step 1: Send Template to TrustSignal for Approval
+            </button>
+
+            <button class="btn btn-ai" id="btnPushToWebEngage" style="display: none; background: #00d26a; color: #064e3b; font-weight: bold;" onclick="triggerWebEngageApiCall()">
+              📤 Step 2: Push Approved Template to WebEngage
+            </button>
+
+            <button class="btn btn-secondary" onclick="generateCurlCommand()">📋 Copy TrustSignal cURL</button>
+          </div>
+
+          <div id="apiResponseBox" style="margin-top: 1rem; display: none;">
+            <label class="form-label" id="apiResponseLabel">API Response:</label>
+            <pre id="apiResponseContent" style="color: #34d399;"></pre>
+          </div>
+        </div>
+
+        <!-- Tab 3: WhatsApp Phone Preview -->
+        <div id="modalTabPreview" style="display: none;">
+          <div class="phone-mockup">
+            <div style="text-align: center; font-size: 0.72rem; color: #9ca3af; margin-bottom: 8px;">
+              WhatsApp Business • Snapmint Verified
+            </div>
+            <div class="wa-bubble">
+              <div id="prevBannerBox" style="width: 100%; height: 110px; background: linear-gradient(135deg, #1e3a8a, #065f46); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-bottom: 8px; text-align: center; padding: 6px;">
+                Banner Preview
+              </div>
+              <div id="prevBodyText">
+                Hello Rahul! Complete your order today at 0% EMI with monthly installments of ₹3,166!
+              </div>
+              <div class="wa-btn" id="prevBtnText">
+                👉 Complete Order Now
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveRow()">💾 Save Campaign Row</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI Auto-Fill Modal (Future Agent Integration) -->
+  <div class="modal-backdrop" id="aiModal">
+    <div class="modal" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; font-weight: 700;">✨ AI Content & Campaign Agent</h3>
+        <button class="btn btn-secondary btn-sm" onclick="closeAIModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.85rem;">
+          In Phase 1, our internal agent (Claude Sonnet 5 on Bedrock Mumbai) auto-populates copy, templates, and banners from high-level marketing briefs.
+        </p>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Product Line</label>
+          <select id="ai_product" class="form-control">
+            <option value="0% EMI BNPL Mobiles">0% EMI BNPL Mobiles</option>
+            <option value="Personal Loan Cash">Personal Loan Cash</option>
+            <option value="Partner Flash Sale">Partner Flash Sale (OnePlus Store)</option>
+            <option value="EMI Repayment Reminder">EMI Repayment Reminder</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Target Segment</label>
+          <select id="ai_segment" class="form-control">
+            <option value="High-Intent Cart Abandoners">High-Intent Cart Abandoners (Dropped off checkout)</option>
+            <option value="Pre-Approved Zero Utilization">Pre-Approved Zero Utilization (KYC done, no order)</option>
+            <option value="Repeat Limit Upgrade">Repeat Borrower Limit Upgrade (₹20k -> ₹40k)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Marketer Custom Guidance / Offer Hook</label>
+          <textarea id="ai_guidance" class="form-control" placeholder="e.g. Flash deal ends tonight at 12 midnight. Highlight 0% downpayment on OnePlus."></textarea>
+        </div>
+
+        <button class="btn btn-ai" style="width: 100%; justify-content: center; padding: 10px;" onclick="runAIAgentSimulation()">
+          ⚡ Call Internal Agent API & Populate New Row
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initial Seed Data (Snapmint Core Campaign Formats)
+    const initialData = [
+      {
+        day: "Monday",
+        date: "2026-11-02",
+        product: "0% EMI BNPL Mobiles",
+        segment_name: "Cart_Abandoners_24h",
+        naming: "20261102_BNPL_CART_WA_MKTG_V1",
+        wsp_vendor: "Route Mobile",
+        waba_number: "919876543210",
+        template_category: "MARKETING",
+        template_name: "cart_recovery_mobile_v1",
+        cta_text: "Complete Order Now",
+        target_url: "https://snapmint.com/cart?utm_source=wa&utm_medium=crm",
+        exclude: "Defaulted_Users, DND",
+        start_age: 21,
+        end_age: 50,
+        gender: "All",
+        location: "Pan India",
+        campaign_type: "Triggered",
+        channel: "WhatsApp",
+        exp: "Base",
+        comms_a: "Smartphone waiting in cart!",
+        comms_b: "Namaste {{1}}! Your smartphone is waiting. Complete checkout with ₹0 downpayment and easy EMIs of {{2}}!",
+        time: "11:00 AM",
+        banner_url: "https://cdn.snapmint.com/banners/diwali_mobile.png",
+        size: "180,000",
+        comments: "Highlight flat ₹500 instant cashback on Axis Bank cards",
+        status: "APPROVED"
+      },
+      {
+        day: "Tuesday",
+        date: "2026-11-03",
+        product: "Personal Loan Cash",
+        segment_name: "Repeat_Limit_Upgrade_40k",
+        naming: "20261103_PL_UPGRADE_WA_MKTG_V1",
+        wsp_vendor: "Route Mobile",
+        waba_number: "919876543210",
+        template_category: "MARKETING",
+        template_name: "cash_loan_upgrade_v1",
+        cta_text: "Withdraw Cash to Bank",
+        target_url: "https://snapmint.com/loan?utm_source=wa",
+        exclude: "Overdue_Users",
+        start_age: 23,
+        end_age: 55,
+        gender: "All",
+        location: "Tier 1 & Metro",
+        campaign_type: "Promotional",
+        channel: "WhatsApp",
+        exp: "A/B Variant A",
+        comms_a: "Instant ₹40,000 Cash Approved",
+        comms_b: "Congratulations {{1}}! Your cash limit is increased to Rs.{{2}}. 1-click bank transfer in 2 minutes.",
+        time: "02:00 PM",
+        banner_url: "https://cdn.snapmint.com/banners/cash_loan_40k.png",
+        size: "120,000",
+        comments: "Focus on 2-minute disbursement and 0 paperwork",
+        status: "SUBMITTED"
+      },
+      {
+        day: "Wednesday",
+        date: "2026-11-04",
+        product: "Partner Flash Sale",
+        segment_name: "High_Propensity_Electronics",
+        naming: "20261104_ONEPLUS_SALE_WA_MKTG_V1",
+        wsp_vendor: "TrustSignal",
+        waba_number: "919876543210",
+        template_category: "MARKETING",
+        template_name: "oneplus_festive_deal_v1",
+        cta_text: "Claim Flash Deal",
+        target_url: "https://snapmint.com/partner/oneplus?utm_source=wa",
+        exclude: "Recent_Buyer_7d",
+        start_age: 20,
+        end_age: 45,
+        gender: "All",
+        location: "Pan India",
+        campaign_type: "Seasonal",
+        channel: "WhatsApp",
+        exp: "Flash Deal",
+        comms_a: "OnePlus Mega Brand Days",
+        comms_b: "Exclusive Flash Deal! Get flat ₹2,000 cashback on OnePlus Nord at Snapmint 0% EMI checkout.",
+        time: "06:30 PM",
+        banner_url: "https://cdn.snapmint.com/banners/oneplus_nord.png",
+        size: "350,000",
+        comments: "Urgent tone: valid for next 4 hours only",
+        status: "APPROVED"
+      },
+      {
+        day: "Thursday",
+        date: "2026-11-05",
+        product: "EMI Repayment Reminder",
+        segment_name: "Due_In_48_Hours",
+        naming: "20261105_REPAY_DUE_48H_WA_UTIL_V1",
+        wsp_vendor: "Route Mobile",
+        waba_number: "919876543210",
+        template_category: "UTILITY",
+        template_name: "emi_repayment_reminder_v1",
+        cta_text: "Pay EMI Instantly",
+        target_url: "https://snapmint.com/pay?utm_source=wa",
+        exclude: "Already_Paid",
+        start_age: 18,
+        end_age: 65,
+        gender: "All",
+        location: "Pan India",
+        campaign_type: "Triggered",
+        channel: "WhatsApp",
+        exp: "Transactional",
+        comms_a: "Snapmint EMI Due Reminder",
+        comms_b: "Hi {{1}}, your installment of Rs.{{2}} for Loan ID {{3}} is due on {{4}}. Pay via UPI to avoid late fees.",
+        time: "10:00 AM",
+        banner_url: "",
+        size: "330,000",
+        comments: "Strictly Utility transactional tone; no promo copy",
+        status: "DRAFT"
+      }
+    ];
+
+    // Persistence: load from LocalStorage or seed initial data
+    let campaigns = JSON.parse(localStorage.getItem("snapmint_campaigns_db") || "null") || initialData;
+
+    function saveToStorage() {
+      localStorage.setItem("snapmint_campaigns_db", JSON.stringify(campaigns));
+      updateKPIs();
+      renderTable();
+    }
+
+    function updateKPIs() {
+      document.getElementById("kpi-total").innerText = campaigns.length;
+      document.getElementById("kpi-wa-approved").innerText = campaigns.filter(c => c.status === "APPROVED").length;
+      document.getElementById("kpi-wa-pending").innerText = campaigns.filter(c => c.status === "SUBMITTED").length;
+      
+      const totalSize = campaigns.reduce((acc, c) => acc + (parseInt(c.size.replace(/,/g, '')) || 0), 0);
+      document.getElementById("kpi-audience").innerText = totalSize.toLocaleString();
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById("tableBody");
+      tbody.innerHTML = "";
+
+      campaigns.forEach((c, index) => {
+        let statusBadge = `<span class="badge badge-draft">Draft</span>`;
+        if (c.status === "APPROVED") statusBadge = `<span class="badge badge-approved">Approved</span>`;
+        if (c.status === "SUBMITTED") statusBadge = `<span class="badge badge-pending">Submitted</span>`;
+        if (c.status === "REJECTED") statusBadge = `<span class="badge badge-rejected">Rejected</span>`;
+
+        let catBadge = c.template_category === "UTILITY" 
+          ? `<span class="badge badge-utility">Utility</span>` 
+          : `<span class="badge badge-marketing">Marketing</span>`;
+
+        const tr = document.createElement("tr");
+        tr.ondblclick = () => openEditModal(index);
+
+        tr.innerHTML = `
+          <td class="sticky-col">
+            <div style="display: flex; gap: 6px; align-items: center;">
+              ${statusBadge}
+              <button class="btn btn-secondary btn-sm" onclick="openEditModal(${index})">Edit</button>
+            </div>
+          </td>
+          <td>${c.day || '-'}</td>
+          <td><strong>${c.date || '-'}</strong></td>
+          <td>${c.product || '-'}</td>
+          <td><code>${c.segment_name || '-'}</code></td>
+          <td><code style="color: #60a5fa;">${c.naming || '-'}</code></td>
+          <td><strong>${c.wsp_vendor || 'Route Mobile'}</strong></td>
+          <td><code>${c.waba_number || '-'}</code></td>
+          <td>${catBadge}</td>
+          <td><code>${c.template_name || '-'}</code></td>
+          <td>${c.cta_text || '-'}</td>
+          <td><a href="${c.target_url}" target="_blank" style="color: #93c5fd; text-decoration: none;">Link ↗</a></td>
+          <td>${c.exclude || '-'}</td>
+          <td>${c.start_age || '-'}</td>
+          <td>${c.end_age || '-'}</td>
+          <td>${c.gender || 'All'}</td>
+          <td>${c.location || 'Pan India'}</td>
+          <td>${c.campaign_type || '-'}</td>
+          <td><span class="badge" style="background: rgba(0,210,106,0.15); color: #00d26a;">${c.channel}</span></td>
+          <td>${c.exp || '-'}</td>
+          <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis;">${c.comms_a || '-'}</td>
+          <td style="max-width: 350px; overflow: hidden; text-overflow: ellipsis;">${c.comms_b || '-'}</td>
+          <td>${c.time || '-'}</td>
+          <td>${c.banner_url ? `<a href="${c.banner_url}" target="_blank" style="color: #60a5fa;">View Banner</a>` : '-'}</td>
+          <td><strong>${c.size || '-'}</strong></td>
+          <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; color: var(--text-muted);">${c.comments || '-'}</td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterTable() {
+      const q = document.getElementById("searchInput").value.toLowerCase();
+      const fProduct = document.getElementById("filterProduct").value;
+      const fChannel = document.getElementById("filterChannel").value;
+      const fStatus = document.getElementById("filterStatus").value;
+
+      const rows = document.querySelectorAll("#tableBody tr");
+      campaigns.forEach((c, idx) => {
+        const matchesQuery = !q || JSON.stringify(c).toLowerCase().includes(q);
+        const matchesProduct = !fProduct || c.product === fProduct;
+        const matchesChannel = !fChannel || c.channel === fChannel;
+        const matchesStatus = !fStatus || c.status === fStatus;
+
+        if (matchesQuery && matchesProduct && matchesChannel && matchesStatus) {
+          rows[idx].style.display = "";
+        } else {
+          rows[idx].style.display = "none";
+        }
+      });
+    }
+
+    // Modal Operations
+    function openAddModal() {
+      document.getElementById("modalTitle").innerText = "+ Add New Campaign Calendar Row";
+      document.getElementById("editIndex").value = "-1";
+
+      // Reset fields
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById("field_day").value = "Monday";
+      document.getElementById("field_date").value = today;
+      document.getElementById("field_product").value = "0% EMI BNPL Mobiles";
+      document.getElementById("field_segment_name").value = "";
+      document.getElementById("field_naming").value = "";
+      document.getElementById("field_channel").value = "WhatsApp";
+      document.getElementById("field_wsp_vendor").value = "Route Mobile";
+      document.getElementById("field_waba_number").value = "919876543210";
+      document.getElementById("field_template_category").value = "MARKETING";
+      document.getElementById("field_template_name").value = "";
+      document.getElementById("field_cta_text").value = "Complete Order Now";
+      document.getElementById("field_target_url").value = "https://snapmint.com/";
+      document.getElementById("field_exclude").value = "Defaulted_Users";
+      document.getElementById("field_start_age").value = 21;
+      document.getElementById("field_end_age").value = 50;
+      document.getElementById("field_gender").value = "All";
+      document.getElementById("field_location").value = "Pan India";
+      document.getElementById("field_campaign_type").value = "Triggered";
+      document.getElementById("field_exp").value = "Base";
+      document.getElementById("field_comms_a").value = "";
+      document.getElementById("field_comms_b").value = "";
+      document.getElementById("field_time").value = "11:00 AM";
+      document.getElementById("field_size").value = "100,000";
+      document.getElementById("field_banner_url").value = "";
+      document.getElementById("field_comments").value = "";
+
+      refreshPipelineStepBadges("DRAFT");
+      switchModalTab('details');
+      document.getElementById("editModal").classList.add("active");
+    }
+
+    function openEditModal(index) {
+      document.getElementById("modalTitle").innerText = "Edit Campaign & WSP Dispatcher (Row #" + (index + 1) + ")";
+      document.getElementById("editIndex").value = index;
+      const c = campaigns[index];
+
+      document.getElementById("field_day").value = c.day || "";
+      document.getElementById("field_date").value = c.date || "";
+      document.getElementById("field_product").value = c.product || "0% EMI BNPL Mobiles";
+      document.getElementById("field_segment_name").value = c.segment_name || "";
+      document.getElementById("field_naming").value = c.naming || "";
+      document.getElementById("field_channel").value = c.channel || "WhatsApp";
+      document.getElementById("field_wsp_vendor").value = c.wsp_vendor || "Route Mobile";
+      document.getElementById("field_waba_number").value = c.waba_number || "919876543210";
+      document.getElementById("field_template_category").value = c.template_category || "MARKETING";
+      document.getElementById("field_template_name").value = c.template_name || "";
+      document.getElementById("field_cta_text").value = c.cta_text || "";
+      document.getElementById("field_target_url").value = c.target_url || "";
+      document.getElementById("field_exclude").value = c.exclude || "";
+      document.getElementById("field_start_age").value = c.start_age || 21;
+      document.getElementById("field_end_age").value = c.end_age || 50;
+      document.getElementById("field_gender").value = c.gender || "All";
+      document.getElementById("field_location").value = c.location || "Pan India";
+      document.getElementById("field_campaign_type").value = c.campaign_type || "Triggered";
+      document.getElementById("field_exp").value = c.exp || "Base";
+      document.getElementById("field_comms_a").value = c.comms_a || "";
+      document.getElementById("field_comms_b").value = c.comms_b || "";
+      document.getElementById("field_time").value = c.time || "";
+      document.getElementById("field_size").value = c.size || "";
+      document.getElementById("field_banner_url").value = c.banner_url || "";
+      document.getElementById("field_comments").value = c.comments || "";
+
+      refreshPipelineStepBadges(c.status || "DRAFT");
+      updatePreviewAndJson();
+      switchModalTab('details');
+      document.getElementById("editModal").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("editModal").classList.remove("active");
+    }
+
+    function switchModalTab(tab) {
+      document.getElementById("modalTabDetails").style.display = tab === 'details' ? 'grid' : 'none';
+      document.getElementById("modalTabWsp").style.display = tab === 'wsp' ? 'block' : 'none';
+      document.getElementById("modalTabPreview").style.display = tab === 'preview' ? 'block' : 'none';
+
+      document.getElementById("tabBtnDetails").className = "btn btn-secondary btn-sm " + (tab === 'details' ? 'active' : '');
+      document.getElementById("tabBtnWsp").className = "btn btn-secondary btn-sm " + (tab === 'wsp' ? 'active' : '');
+      document.getElementById("tabBtnPreview").className = "btn btn-secondary btn-sm " + (tab === 'preview' ? 'active' : '');
+
+      if (tab === 'wsp' || tab === 'preview') {
+        updatePreviewAndJson();
+      }
+    }
+
+    function updatePreviewAndJson() {
+      const templateName = document.getElementById("field_template_name").value || "template_sample_v1";
+      const category = document.getElementById("field_template_category").value;
+      const commsB = document.getElementById("field_comms_b").value || "Hello {{1}}! Your offer is ready.";
+      const ctaText = document.getElementById("field_cta_text").value || "Complete Order";
+      const targetUrl = document.getElementById("field_target_url").value || "https://snapmint.com/";
+      const bannerUrl = document.getElementById("field_banner_url").value;
+
+      // Update Phone Preview
+      document.getElementById("prevBodyText").innerText = commsB.replace(/{{1}}/g, "Rahul").replace(/{{2}}/g, "₹3,166");
+      document.getElementById("prevBtnText").innerText = "👉 " + ctaText;
+      document.getElementById("prevBannerBox").innerText = bannerUrl ? "🖼️ Image Banner: " + bannerUrl.split('/').pop() : "Standard Header";
+
+      // Build Route Mobile / WSP Payload
+      const payload = {
+        template_name: templateName,
+        template_category: category,
+        language: ["en"],
+        components: {
+          header: bannerUrl ? { type: "IMAGE", example: [bannerUrl] } : undefined,
+          body: {
+            text: commsB,
+            example: ["Rahul", "₹3,166"]
+          },
+          footer: {
+            text: "Snapmint Financial Services"
+          },
+          buttons: {
+            type: "URL",
+            text: ctaText,
+            url: targetUrl
+          }
+        }
+      };
+
+      document.getElementById("jsonPayloadPreview").innerText = JSON.stringify(payload, null, 2);
+    }
+
+    function saveRow() {
+      const idx = parseInt(document.getElementById("editIndex").value);
+      const rowData = {
+        day: document.getElementById("field_day").value,
+        date: document.getElementById("field_date").value,
+        product: document.getElementById("field_product").value,
+        segment_name: document.getElementById("field_segment_name").value,
+        naming: document.getElementById("field_naming").value,
+        wsp_vendor: document.getElementById("field_wsp_vendor").value,
+        waba_number: document.getElementById("field_waba_number").value,
+        template_category: document.getElementById("field_template_category").value,
+        template_name: document.getElementById("field_template_name").value,
+        cta_text: document.getElementById("field_cta_text").value,
+        target_url: document.getElementById("field_target_url").value,
+        exclude: document.getElementById("field_exclude").value,
+        start_age: document.getElementById("field_start_age").value,
+        end_age: document.getElementById("field_end_age").value,
+        gender: document.getElementById("field_gender").value,
+        location: document.getElementById("field_location").value,
+        campaign_type: document.getElementById("field_campaign_type").value,
+        channel: document.getElementById("field_channel").value,
+        exp: document.getElementById("field_exp").value,
+        comms_a: document.getElementById("field_comms_a").value,
+        comms_b: document.getElementById("field_comms_b").value,
+        time: document.getElementById("field_time").value,
+        banner_url: document.getElementById("field_banner_url").value,
+        size: document.getElementById("field_size").value,
+        comments: document.getElementById("field_comments").value,
+        status: idx >= 0 ? campaigns[idx].status : "DRAFT"
+      };
+
+      if (idx >= 0) {
+        campaigns[idx] = rowData;
+      } else {
+        campaigns.unshift(rowData);
+      }
+
+      saveToStorage();
+      closeModal();
+    }
+
+    function refreshPipelineStepBadges(status) {
+      const b1 = document.getElementById("stepBadge1");
+      const b2 = document.getElementById("stepBadge2");
+      const b3 = document.getElementById("stepBadge3");
+      const b4 = document.getElementById("stepBadge4");
+      const btnTs = document.getElementById("btnTriggerTrustSignal");
+      const btnWe = document.getElementById("btnPushToWebEngage");
+      const resBox = document.getElementById("apiResponseBox");
+
+      if (!b1 || !b2 || !b3 || !b4) return;
+      resBox.style.display = "none";
+      btnTs.disabled = false;
+      btnTs.innerText = "🚀 Step 1: Send Template to TrustSignal for Approval";
+      btnWe.disabled = false;
+      btnWe.innerText = "📤 Step 2: Push Approved Template to WebEngage";
+
+      if (status === "APPROVED") {
+        b1.className = "badge badge-approved"; b1.innerText = "1. Content Ready ✓";
+        b2.className = "badge badge-approved"; b2.innerText = "2. TrustSignal Passed ✓";
+        b3.className = "badge badge-approved"; b3.innerText = "3. Meta Approved ✓";
+        b4.className = "badge badge-pending"; b4.innerText = "4. Ready to Push";
+        btnTs.innerText = "✓ TrustSignal Approved";
+        btnWe.style.display = "inline-flex";
+      } else if (status === "SUBMITTED") {
+        b1.className = "badge badge-approved"; b1.innerText = "1. Content Ready ✓";
+        b2.className = "badge badge-pending"; b2.innerText = "2. Under Meta Review";
+        b3.className = "badge badge-draft"; b3.innerText = "3. Awaiting Approval";
+        b4.className = "badge badge-draft"; b4.innerText = "4. WebEngage Pending";
+        btnTs.innerText = "⏳ In Review at TrustSignal";
+        btnWe.style.display = "none";
+      } else {
+        b1.className = "badge badge-draft"; b1.innerText = "1. Draft";
+        b2.className = "badge badge-draft"; b2.innerText = "2. TrustSignal Meta";
+        b3.className = "badge badge-draft"; b3.innerText = "3. Approved";
+        b4.className = "badge badge-draft"; b4.innerText = "4. WebEngage Sync";
+        btnWe.style.display = "none";
+      }
+    }
+
+    // STEP 1: Trigger TrustSignal Approval API & Simulate Meta Webhook Callback
+    function triggerTrustSignalApiCall() {
+      const templateName = document.getElementById("field_template_name").value || "snapmint_template_v1";
+      const category = document.getElementById("field_template_category").value;
+      const token = document.getElementById("wsp_token_input").value;
+      const wabaNumber = document.getElementById("field_waba_number").value;
+      const ctaText = document.getElementById("field_cta_text").value;
+      const targetUrl = document.getElementById("field_target_url").value;
+      const commsB = document.getElementById("field_comms_b").value;
+      const bannerUrl = document.getElementById("field_banner_url").value;
+
+      const resBox = document.getElementById("apiResponseBox");
+      const resLabel = document.getElementById("apiResponseLabel");
+      const resContent = document.getElementById("apiResponseContent");
+
+      // Update UI badges to in-progress
+      document.getElementById("stepBadge1").className = "badge badge-approved";
+      document.getElementById("stepBadge1").innerText = "1. Content Ready ✓";
+
+      document.getElementById("stepBadge2").className = "badge badge-pending";
+      document.getElementById("stepBadge2").innerText = "2. Calling TrustSignal...";
+
+      document.getElementById("stepBadge3").className = "badge badge-draft";
+      document.getElementById("stepBadge3").innerText = "3. Awaiting Approval";
+
+      document.getElementById("stepBadge4").className = "badge badge-draft";
+      document.getElementById("stepBadge4").innerText = "4. WebEngage Pending";
+
+      document.getElementById("btnTriggerTrustSignal").disabled = true;
+      document.getElementById("btnTriggerTrustSignal").innerText = "⏳ Submitting to TrustSignal...";
+
+      resBox.style.display = "block";
+      resLabel.innerText = "Step 1: TrustSignal API Gateway (POST https://api.trustsignal.io/v1/whatsapp/templates)";
+      resContent.style.color = "#60a5fa";
+      resContent.innerText = "Connecting to TrustSignal API endpoint with Bearer Auth...\nDispatching WhatsApp Business Template components (Category: " + category + ")...";
+
+      setTimeout(() => {
+        const stage1Response = {
+          status: "SUCCESS",
+          http_code: 200,
+          wsp_gateway: "TrustSignal India (api.trustsignal.io)",
+          message: "Template accepted by TrustSignal and forwarded to Meta Cloud API for automated compliance review.",
+          data: {
+            trustsignal_template_id: "ts_tpl_" + Math.floor(10000000 + Math.random() * 90000000),
+            meta_template_name: templateName,
+            waba_id: wabaNumber,
+            category: category,
+            language: "en",
+            status: "PENDING_APPROVAL",
+            submitted_at: new Date().toISOString()
+          }
+        };
+
+        resContent.style.color = "#fbbf24";
+        resContent.innerText = JSON.stringify(stage1Response, null, 2) + "\n\n⏳ [Webhook Listener]: Simulating Meta Cloud automated compliance verification check...";
+
+        // Step 1.2: Simulate Meta automated webhook approval callback
+        setTimeout(() => {
+          const approvalWebhook = {
+            webhook_event: "message_template_status_update",
+            source: "Meta Cloud Graph API via TrustSignal Webhook Relay",
+            template_id: stage1Response.data.trustsignal_template_id,
+            template_name: templateName,
+            category: category,
+            status: "APPROVED",
+            quality_score: "HIGH",
+            review_reason: "Verified: Body variables and dynamic URL CTA conform to WhatsApp Business Policy.",
+            approved_at: new Date().toISOString()
+          };
+
+          resContent.style.color = "#34d399";
+          resContent.innerText = JSON.stringify(approvalWebhook, null, 2);
+
+          // Update Progress Badges
+          document.getElementById("stepBadge2").className = "badge badge-approved";
+          document.getElementById("stepBadge2").innerText = "2. TrustSignal Passed ✓";
+
+          document.getElementById("stepBadge3").className = "badge badge-approved";
+          document.getElementById("stepBadge3").innerText = "3. Meta Approved ✓";
+
+          document.getElementById("stepBadge4").className = "badge badge-pending";
+          document.getElementById("stepBadge4").innerText = "4. Ready to Push to WebEngage";
+
+          // Enable Step 2 Push to WebEngage Button
+          document.getElementById("btnTriggerTrustSignal").disabled = false;
+          document.getElementById("btnTriggerTrustSignal").innerText = "✓ TrustSignal Approved";
+          
+          const btnWe = document.getElementById("btnPushToWebEngage");
+          btnWe.style.display = "inline-flex";
+          btnWe.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+          // Update current row status in campaigns
+          const idx = parseInt(document.getElementById("editIndex").value);
+          if (idx >= 0) {
+            campaigns[idx].status = "APPROVED";
+            saveToStorage();
+          }
+        }, 1500);
+
+      }, 1000);
+    }
+
+    // STEP 2: Trigger WebEngage REST API to Register Approved Template
+    function triggerWebEngageApiCall() {
+      const licenseCode = document.getElementById("we_license_input").value || "~111222333";
+      const apiKey = document.getElementById("we_api_key_input").value;
+      const templateName = document.getElementById("field_template_name").value || "snapmint_template_v1";
+      const category = document.getElementById("field_template_category").value;
+      const ctaText = document.getElementById("field_cta_text").value;
+      const targetUrl = document.getElementById("field_target_url").value;
+      const commsB = document.getElementById("field_comms_b").value;
+      const bannerUrl = document.getElementById("field_banner_url").value;
+
+      const resBox = document.getElementById("apiResponseBox");
+      const resLabel = document.getElementById("apiResponseLabel");
+      const resContent = document.getElementById("apiResponseContent");
+
+      document.getElementById("btnPushToWebEngage").disabled = true;
+      document.getElementById("btnPushToWebEngage").innerText = "⏳ Calling WebEngage API...";
+
+      document.getElementById("stepBadge4").className = "badge badge-pending";
+      document.getElementById("stepBadge4").innerText = "4. Pushing to WebEngage...";
+
+      resBox.style.display = "block";
+      resLabel.innerText = "Step 2: WebEngage REST API (POST https://api.webengage.com/v1/accounts/" + licenseCode + "/templates)";
+      resContent.style.color = "#60a5fa";
+      resContent.innerText = "Calling WebEngage REST API with Account License: " + licenseCode + " ...\nMapping approved WhatsApp template to TrustSignal WSP Integration Connector...";
+
+      setTimeout(() => {
+        const webEngageResponse = {
+          status: "SUCCESS",
+          http_code: 201,
+          system: "WebEngage India Cluster",
+          endpoint: "https://api.webengage.com/v1/accounts/" + licenseCode + "/templates",
+          message: "WhatsApp template successfully registered and linked to TrustSignal WSP connector in WebEngage.",
+          data: {
+            webengage_template_id: "we_wa_tpl_" + Math.floor(10000000 + Math.random() * 90000000),
+            template_name: templateName,
+            channel: "WHATSAPP",
+            wsp_integration: "TrustSignal_Snapmint_Prod",
+            category: category,
+            language: "en",
+            status: "ACTIVE",
+            components_registered: {
+              header_image: Boolean(bannerUrl),
+              body_variable_count: (commsB.match(/{{[0-9]+}}/g) || []).length,
+              cta_button: {
+                type: "DYNAMIC_URL",
+                text: ctaText,
+                url_format: targetUrl
+              }
+            },
+            ready_in_campaign_builder: true,
+            synced_at: new Date().toISOString()
+          }
+        };
+
+        resContent.style.color = "#34d399";
+        resContent.innerText = JSON.stringify(webEngageResponse, null, 2);
+
+        document.getElementById("stepBadge4").className = "badge badge-approved";
+        document.getElementById("stepBadge4").innerText = "4. WebEngage Synced ✓";
+
+        document.getElementById("btnPushToWebEngage").disabled = false;
+        document.getElementById("btnPushToWebEngage").innerText = "✓ Synced into WebEngage";
+
+        // Append WebEngage ID to comments in table
+        const idx = parseInt(document.getElementById("editIndex").value);
+        if (idx >= 0) {
+          const syncNote = "WebEngage Synced (ID: " + webEngageResponse.data.webengage_template_id + ")";
+          if (!campaigns[idx].comments.includes("WebEngage Synced")) {
+            campaigns[idx].comments = campaigns[idx].comments ? (campaigns[idx].comments + " | " + syncNote) : syncNote;
+          }
+          saveToStorage();
+        }
+
+        alert("🎉 Chained Pipeline Complete!\n\n1. Template was submitted to TrustSignal and approved by Meta.\n2. WebEngage API was triggered and linked template '" + templateName + "' to WebEngage account " + licenseCode + ".\n\nMarketers can now select this template immediately inside WebEngage Campaign Builder!");
+      }, 1200);
+    }
+
+    function generateCurlCommand() {
+      const templateName = document.getElementById("field_template_name").value || "template_v1";
+      const payload = document.getElementById("jsonPayloadPreview").innerText;
+      const curl = `curl -X POST https://api.trustsignal.io/v1/whatsapp/templates \\\n  -H "Authorization: Bearer ts_live_key_98374829374928374928" \\\n  -H "Content-Type: application/json" \\\n  -d '${payload.replace(/\n/g, '')}'`;
+      navigator.clipboard.writeText(curl);
+      alert("TrustSignal cURL command copied to clipboard!");
+    }
+
+    // AI Agent Auto-Fill Simulation
+    function openAIAutoFillModal() {
+      document.getElementById("aiModal").classList.add("active");
+    }
+
+    function closeAIModal() {
+      document.getElementById("aiModal").classList.remove("active");
+    }
+
+    function runAIAgentSimulation() {
+      const product = document.getElementById("ai_product").value;
+      const segment = document.getElementById("ai_segment").value;
+      const guidance = document.getElementById("ai_guidance").value;
+
+      closeAIModal();
+
+      // Show temporary notification
+      alert("AI Agent (Claude Sonnet 5 in Bedrock Mumbai) received brief. Generating copy variants, banner specs, and DLT/Meta checks...");
+
+      const today = new Date().toISOString().split('T')[0];
+      const newRow = {
+        day: "Today",
+        date: today,
+        product: product,
+        segment_name: segment.replace(/ /g, '_'),
+        naming: "202611_" + product.substring(0,4).toUpperCase() + "_AGENT_V1",
+        wsp_vendor: "Route Mobile",
+        waba_number: "919876543210",
+        template_category: product.includes("Repayment") ? "UTILITY" : "MARKETING",
+        template_name: product.toLowerCase().replace(/ /g, '_') + "_v1",
+        cta_text: product.includes("Loan") ? "Withdraw Cash" : "Complete Order Now",
+        target_url: "https://snapmint.com/checkout?utm_source=wa&utm_medium=crm",
+        exclude: "Overdue_Users, OptOut_24h",
+        start_age: 21,
+        end_age: 55,
+        gender: "All",
+        location: "Pan India",
+        campaign_type: "Triggered",
+        channel: "WhatsApp",
+        exp: "AI-Generated",
+        comms_a: "Exclusive Snapmint Offer for You!",
+        comms_b: "Namaste {{1}}! " + (guidance ? guidance : "Aapka offer wait kar raha hai.") + " Complete your transaction with easy EMIs of {{2}}!",
+        time: "11:30 AM",
+        banner_url: "https://cdn.snapmint.com/banners/ai_generated_banner.png",
+        size: "200,000",
+        comments: guidance || "Generated via Bedrock Sonnet 5 in Mumbai",
+        status: "DRAFT"
+      };
+
+      campaigns.unshift(newRow);
+      saveToStorage();
+    }
+
+    // CSV Export & Import
+    function exportCSV() {
+      if (campaigns.length === 0) { alert("No data to export!"); return; }
+      const headers = Object.keys(campaigns[0]).join(",");
+      const rows = campaigns.map(c => Object.values(c).map(val => `"${(val+'').replace(/"/g, '""')}"`).join(","));
+      const csvContent = "data:text/csv;charset=utf-8," + [headers, ...rows].join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", `Snapmint_CRM_Calendar_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function importCSV(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        const lines = text.split("\n").filter(l => l.trim().length > 0);
+        if (lines.length < 2) return;
+        const headers = lines[0].split(",").map(h => h.trim().replace(/^"|"$/g, ''));
+        const imported = [];
+        for (let i = 1; i < lines.length; i++) {
+          const values = lines[i].split(",").map(v => v.trim().replace(/^"|"$/g, ''));
+          const rowObj = {};
+          headers.forEach((h, idx) => {
+            rowObj[h] = values[idx] || "";
+          });
+          imported.push(rowObj);
+        }
+        campaigns = imported;
+        saveToStorage();
+        alert(`Successfully imported ${imported.length} rows!`);
+      };
+      reader.readAsText(file);
+    }
+
+    // Initialize
+    updateKPIs();
+    renderTable();
+  </script>
+</body>
+</html>

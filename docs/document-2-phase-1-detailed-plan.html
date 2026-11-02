@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snapmint CRM Platform — Document 2: Phase 1 Detailed Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    @page { size: A4; margin: 20mm; }
+    body { background-color: #f3f4f6; color: #1e293b; font-family: 'Segoe UI', -apple-system, sans-serif; line-height: 1.6; margin: 0; padding: 40px 20px; }
+    .doc-page { background: #ffffff; max-width: 900px; margin: 0 auto; padding: 60px 80px; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e2e8f0; }
+    .action-bar { max-width: 900px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; }
+    .btn { background: #0d9488; color: #ffffff; padding: 10px 20px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    .btn:hover { background: #0f766e; }
+    h1.doc-title { font-size: 24px; font-weight: 700; color: #0f766e; border-bottom: 2px solid #0d9488; padding-bottom: 12px; margin-bottom: 6px; }
+    .doc-meta { font-size: 13px; color: #64748b; margin-bottom: 26px; }
+    h2 { font-size: 18px; font-weight: 700; color: #0f172a; margin-top: 32px; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
+    h3 { font-size: 15px; font-weight: 600; color: #334155; margin-top: 20px; margin-bottom: 6px; }
+    p, li { font-size: 14px; color: #334155; margin-bottom: 10px; }
+    ul, ol { padding-left: 24px; margin-bottom: 14px; }
+    .callout { background: #f0fdfa; border-left: 4px solid #0d9488; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 18px 0; font-size: 14px; }
+    .callout.warning { background: #fffbeb; border-left-color: #d97706; }
+    table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 13px; }
+    th { background: #0f766e; color: #ffffff; font-weight: 600; text-align: left; padding: 9px 12px; border: 1px solid #cbd5e1; }
+    td { padding: 9px 12px; border: 1px solid #e2e8f0; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    pre { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #0f172a; overflow-x: auto; margin: 14px 0; line-height: 1.4; }
+    @media print { body { background: #fff; padding: 0; } .action-bar { display: none !important; } .doc-page { box-shadow: none; border: none; padding: 0; max-width: 100%; } h2 { page-break-after: avoid; } table, pre { page-break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <div class="action-bar">
+    <div style="font-weight: 600; color: #475569;">Snapmint AI CRM Platform — Document 2 (Phase 1 Detailed Blueprint)</div>
+    <button class="btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  </div>
+  <div class="doc-page">
+    <h1 class="doc-title">Document 2: Phase 1 Detailed Blueprint — The Portal Backbone, Content Engine, WhatsApp & SMS Whitelisting, and Training Feasibility</h1>
+    <div class="doc-meta">
+      <strong>Scope:</strong> Phase 1 Delivery (Weeks 4 to 10 / 6 Weeks) &nbsp;|&nbsp; 
+      <strong>Target:</strong> Head of CRM, Product Managers, Lead Engineers &nbsp;|&nbsp; 
+      <strong>Date:</strong> October 2026
+    </div>
+
+    <h2>1. Executive Summary & Final Outcome of Phase 1 (Weeks 4 to 10)</h2>
+    <p>
+      Phase 1 delivers the operational backbone of the Snapmint CRM platform over a 6-week delivery milestone (Weeks 4 to 10). It eliminates manual spreadsheet copywriting, unverified creative requests, and disconnected portal checks with a unified web application.
+    </p>
+    <div class="callout">
+      <strong>FINAL OUTCOME BY WEEK 10:</strong> A marketer fills a 1-minute brief in the portal (Product, Segment, Event, Channel, CTA, and Custom Comments). In under 3 seconds, the portal displays 3 verified copy options (EN, HI, Hinglish), a rendered 1080x1080 banner, a WhatsApp policy check, an SMS DLT hash match, and pre-flight compliance checks. Campaign preparation turnaround drops from 24-48 hours to &lt;5 minutes.
+    </div>
+
+    <h2>2. End-to-End Hop-by-Hop Request Flow</h2>
+    <p>The exact journey of every campaign request from client submission to final launch:</p>
+    <ul>
+      <li><strong>1. Marketer Form Submit:</strong> React Portal sends HTTPS POST request to FastAPI backend on AWS ECS Fargate in Mumbai VPC.</li>
+      <li><strong>2. Context & RAG Query:</strong> FastAPI queries Aurora PostgreSQL for 2-3 pre-approved high-converting past campaign examples for that product line.</li>
+      <li><strong>3. Bedrock Call (ap-south-1):</strong> FastAPI invokes Claude Sonnet 5 via India Geographic Profile (<code>in.anthropic.claude-sonnet-5</code>). Compute routes between Mumbai and Hyderabad with Zero Data Retention, returning copy variants and Layout JSON.</li>
+      <li><strong>4. Headless Chromium Render:</strong> FastAPI passes Layout JSON to Headless Chromium container in Mumbai VPC. Renders 1080x1080 PNG in &lt;400ms and uploads to S3 with KMS encryption.</li>
+      <li><strong>5. WhatsApp Route Mobile API:</strong> Submits template payload to Route Mobile via <code>POST /wba/template/create</code> (Bearer JWT). Webhook listener receives real-time approval status from Meta.</li>
+      <li><strong>6. SMS DLT Whitelist Match:</strong> Computes SHA-256 hash of copy and checks local Aurora DLT Whitelist Ledger (manually seeded with Vilpower approved IDs). If matched, passes instantly. If new, generates Vilpower package for operator to register with POC OTP.</li>
+      <li><strong>7. Review Workspace & Launch Gate:</strong> Renders unified review screen. Authorized human manager clicks final Launch button.</li>
+    </ul>
+
+    <h2>3. Building the Campaign Portal: The Central Backbone</h2>
+    <p>The brief form provides 5 core input controls designed to eliminate back-and-forth communication:</p>
+    <ul>
+      <li><strong>1. Product Line (Dropdown):</strong> 0% EMI BNPL Checkout (Mobiles/Electronics), Personal Loan / Cash on EMI, Merchant Partner Flash Deals (OnePlus, Boat, Noise), or EMI Repayment Reminders.</li>
+      <li><strong>2. Audience Segment & Trigger Event (Dropdown):</strong> Encodes customer profile and behavioral trigger event:
+        <ul>
+          <li><em>Cart Abandoner:</em> User added item to cart and completed OTP, but dropped off at payment.</li>
+          <li><em>Approved Zero Utilization:</em> Granted ₹15,000 credit limit, but has not transacted in 14 days.</li>
+          <li><em>Repeat Limit Upgrade:</em> Paid 2+ EMIs on time; eligible for upgrade to ₹40,000.</li>
+          <li><em>Dormant 90 Days:</em> Inactive for 90+ days; cashback re-activation hook.</li>
+          <li><em>Near-Due 48 Hours:</em> Installment due in 48 hours; instant UPI link.</li>
+        </ul>
+      </li>
+      <li><strong>3. Communication Channel (Selector):</strong> WhatsApp Business message, SMS, or Mobile Push.</li>
+      <li><strong>4. Target CTA URL:</strong> Base destination URL. The portal automatically appends verified UTM tracking tags.</li>
+      <li><strong>5. Custom Comments / Special Instructions Box (Multi-line Textarea):</strong> Marketers can add specific nuances without altering system prompts (e.g. <em>"Highlight flat ₹500 instant cashback on Axis Bank cards"</em> or <em>"Make tone urgent: flash deal ends tonight at 12 midnight"</em>).</li>
+    </ul>
+
+    <h2>4. WhatsApp Service Provider (WSP) API Feasibility & Real-Time Status Tracking</h2>
+    <p><strong>Can we check template category real-time and update the status in our portal? YES.</strong></p>
+    <ul>
+      <li><strong>Route Mobile API:</strong> Programmatic template submission via <code>POST https://apis.rmlconnect.net/wba/template/create</code> using Bearer JWT authentication (via <code>/login</code>). Submits category, components, variable examples, and buttons.</li>
+      <li><strong>Infobip API:</strong> Supported via <code>POST /whatsapp/2/senders/{sender}/templates</code> using API key.</li>
+      <li><strong>Gupshup Reality:</strong> Public developer API only supports sending messages and listing templates. Fresh creation requires Enterprise Partner API or manual dashboard.</li>
+      <li><strong>Real-Time Webhook Synchronization:</strong> Meta sends a <code>message_template_status_update</code> webhook event (<code>APPROVED</code>, <code>REJECTED</code>, <code>FLAGGED</code>, <code>PAUSED</code>, <code>CATEGORY_CHANGED</code>) directly to our AWS API Gateway endpoint. A Lambda worker updates the PostgreSQL template table, and Server-Sent Events (SSE) push the update to the React portal, updating the status badge in real time!</li>
+    </ul>
+
+    <h2>5. Telecom DLT (Vilpower) SMS Whitelisting Reality</h2>
+    <div class="callout warning">
+      <strong>TRAI DLT & POC OTP CONSTRAINT:</strong> As per TRAI regulations, telecom DLT platforms (Vilpower, Jio, Airtel) require human web portal logins with SMS OTP sent to the registered mobile number of Snapmint's authorized POC + CAPTCHA. AI agents CANNOT automate DLT login or bypass OTP. We solve this by manually adding approved DLT IDs and message bodies into our portal.
+    </div>
+    <p>How the Portal DLT Whitelist Manager Works in Practice:</p>
+    <ul>
+      <li><strong>1. Existing Templates (Day 1):</strong> Snapmint’s hundreds of approved Vilpower templates are exported to CSV and seeded into Aurora PostgreSQL. Any campaign matching these templates passes in 0 seconds.</li>
+      <li><strong>2. Generating New Templates:</strong> If new copy is generated that is not in the database, the portal outputs a One-Click Vilpower Registration Package (Header ID <code>SNPMNT</code>, Template Name, Text with <code>{#var#}</code>).</li>
+      <li><strong>3. Manual Operator Registration:</strong> The operator contacts the POC for the SMS OTP, logs into Vilpower, and registers the template.</li>
+      <li><strong>4. Manual Whitelist Entry in Portal:</strong> Once approved on Vilpower, the operator opens the portal's "DLT Whitelist Manager", pastes the approved 19-digit DLT Template ID and the exact approved message text, and clicks "Save to Whitelist".</li>
+      <li><strong>5. Instant Campaign Triggering:</strong> The portal computes the SHA-256 hash of the approved text. When triggering campaigns, the portal deterministically attaches the valid DLT Template ID and Header ID, guaranteeing that carrier scrubbing gateways will never drop the SMS.</li>
+    </ul>
+
+    <h2>6. Data Collection & Model Training Feasibility in Mumbai</h2>
+    <p><strong>Did we want to train the model with our old datasets across product lines and events? Is it feasible in Mumbai?</strong></p>
+    <ul>
+      <li><strong>Claude Training is NOT Supported in Mumbai:</strong> AWS Bedrock does not support fine-tuning Claude inside <code>ap-south-1</code>. It is restricted to US regions, which violates Indian data residency.</li>
+      <li><strong>Amazon Nova Supports Fine-Tuning in Mumbai:</strong> Supervised Fine-Tuning is supported natively for Amazon Nova Pro/Lite inside <code>ap-south-1</code>.</li>
+      <li><strong>Why Fine-Tuning in Phase 1 is a Trap:</strong> Catastrophic forgetting when EMI rates change; high provisioned throughput costs; brittleness. In-Context Few-Shot Learning (RAG) with Claude Sonnet 5 gives 95%+ accuracy on Day 1 with ZERO training cost.</li>
+      <li><strong>If Leadership Wants to Train in Mumbai:</strong> Extract 2,500-5,000 records from Databricks (CTR &gt; 3%, Conv &gt; 2%) + WebEngage + Vilpower. Scrub all PII. Format as Bedrock JSONL. Launch training job via AWS CLI: <code>aws bedrock create-model-customization-job</code>.</li>
+    </ul>
+
+    <h2>7. Phase 1 Execution Procedure (Weeks 4 – 10)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Week Range</th>
+          <th>Engineering Focus</th>
+          <th>Core Deliverable</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Weeks 4 – 5</strong></td>
+          <td>Portal Backbone & Database</td>
+          <td>React Calendar views, brief form with custom comments, Aurora PostgreSQL tables.</td>
+        </tr>
+        <tr>
+          <td><strong>Weeks 6 – 7</strong></td>
+          <td>Bedrock Connectivity & RAG</td>
+          <td>FastAPI Bedrock integration (Claude Sonnet 5 in Mumbai), few-shot retrieval, prompt assembly.</td>
+        </tr>
+        <tr>
+          <td><strong>Week 8</strong></td>
+          <td>Whitelisting & Creative Engine</td>
+          <td>Route Mobile API & webhook listener, DLT Whitelist Manager & SHA-256 hash matcher, Headless Chromium banner renderer.</td>
+        </tr>
+        <tr>
+          <td><strong>Week 9</strong></td>
+          <td>Unified Review Workspace</td>
+          <td>Side-by-side review UI, live GSM-7 character counter, pre-flight compliance checks, edit mode.</td>
+        </tr>
+        <tr>
+          <td><strong>Week 10</strong></td>
+          <td>Pilot & Leadership Sign-Off</td>
+          <td>10 real Snapmint campaigns executed; turnaround &lt;5 mins; formal Phase 1 sign-off.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

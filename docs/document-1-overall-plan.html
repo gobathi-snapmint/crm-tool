@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snapmint CRM Platform — Document 1: Overall Agent Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    @page { size: A4; margin: 20mm; }
+    body { background-color: #f3f4f6; color: #1e293b; font-family: 'Segoe UI', -apple-system, sans-serif; line-height: 1.6; margin: 0; padding: 40px 20px; }
+    .doc-page { background: #ffffff; max-width: 900px; margin: 0 auto; padding: 60px 80px; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 1px solid #e2e8f0; }
+    .action-bar { max-width: 900px; margin: 0 auto 20px auto; display: flex; justify-content: space-between; align-items: center; }
+    .btn { background: #1e3a8a; color: #ffffff; padding: 10px 20px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+    .btn:hover { background: #1e40af; }
+    h1.doc-title { font-size: 26px; font-weight: 700; color: #1e3a8a; border-bottom: 2px solid #1e3a8a; padding-bottom: 12px; margin-bottom: 6px; }
+    .doc-meta { font-size: 13px; color: #64748b; margin-bottom: 26px; }
+    h2 { font-size: 18px; font-weight: 700; color: #0f172a; margin-top: 32px; margin-bottom: 12px; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; }
+    h3 { font-size: 15px; font-weight: 600; color: #334155; margin-top: 20px; margin-bottom: 6px; }
+    p, li { font-size: 14px; color: #334155; margin-bottom: 10px; }
+    ul, ol { padding-left: 24px; margin-bottom: 14px; }
+    .callout { background: #f0f9ff; border-left: 4px solid #0284c7; padding: 14px 18px; border-radius: 0 6px 6px 0; margin: 18px 0; font-size: 14px; }
+    table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 13px; }
+    th { background: #1e3a8a; color: #ffffff; font-weight: 600; text-align: left; padding: 10px 12px; border: 1px solid #cbd5e1; }
+    td { padding: 9px 12px; border: 1px solid #e2e8f0; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    pre { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 12px; font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: #0f172a; overflow-x: auto; margin: 14px 0; line-height: 1.4; }
+    @media print { body { background: #fff; padding: 0; } .action-bar { display: none !important; } .doc-page { box-shadow: none; border: none; padding: 0; max-width: 100%; } h2 { page-break-after: avoid; } table, pre { page-break-inside: avoid; } }
+  </style>
+</head>
+<body>
+  <div class="action-bar">
+    <div style="font-weight: 600; color: #475569;">Snapmint AI CRM Platform — Document 1 (Overall Plan)</div>
+    <button class="btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  </div>
+  <div class="doc-page">
+    <h1 class="doc-title">Document 1: Overall Agent Architecture & End-to-End Master Plan</h1>
+    <div class="doc-meta">
+      <strong>Scope:</strong> Master Plan (Milestone-Driven Roadmap) &nbsp;|&nbsp; 
+      <strong>Target:</strong> Executive Leadership, VP of Product, Head of CRM &nbsp;|&nbsp; 
+      <strong>Date:</strong> October 2026
+    </div>
+
+    <h2>1. Executive Vision & Core Mindmap</h2>
+    <p>
+      Snapmint manages high-velocity communications across WhatsApp, SMS, and Push to drive repeat BNPL purchases, personal loans, and timely repayments. Today, running a single campaign requires 24 to 48 hours of manual turnaround across Vilpower DLT, Route Mobile, WebEngage, and Databricks.
+    </p>
+    <p>
+      This platform creates <strong>ONE Central CRM Campaign Calendar Portal</strong>. A marketer inputs a brief, and specialized AI agents collaborate to generate localized copy, render brand graphics, verify DLT/WhatsApp compliance, and assemble WebEngage execution packages.
+    </p>
+    <div class="callout">
+      <strong>HUMAN-ONLY LAUNCH GATE:</strong> AI agents never launch campaigns autonomously. The platform enforces 4 separate permissions (generate content, submit templates, create drafts, launch). Final launch authority is strictly reserved for authorized human campaign managers.
+    </div>
+
+    <pre>
+SNAPMINT CRM PLATFORM
+│
+├── 1. INPUT LAYER (The Portal Backbone)
+│   ├── Calendar Workspace (Month, Week, Day Views)
+│   ├── Guided Brief Form (Product, Segment, Trigger Event, CTA)
+│   └── Custom Comments Box (Marketer's specific notes/offers)
+│
+├── 2. INTELLIGENCE LAYER (AWS Bedrock Mumbai ap-south-1)
+│   ├── Agent 01: Content & Copy Agent (Claude Sonnet 5: EN, HI, Hinglish)
+│   ├── Agent 02: Creative Engine (Deterministic HTML/CSS to PNG in &lt;400ms)
+│   ├── Agent 03: WhatsApp Approval Agent (Dual-Model Policy Check: Sonnet 5 + GPT-5.6)
+│   ├── Agent 04: SMS / DLT Compliance Engine (SHA-256 Exact Text Matching)
+│   ├── Agent 05: WebEngage Draft Agent (Guided Execution Spec + Read-Back Diff)
+│   ├── Agent 06: Debugging & Diagnostic Agent (API Error Triage)
+│   ├── Agent 07: Analytics & Attribution Agent (Databricks SQL Lakehouse Truth)
+│   └── Agent 08: Calendar Planning Agent (Claude Opus 5 Capacity Optimizer)
+│
+├── 3. DETERMINISTIC GUARDRAILS (Code & Lakehouse)
+│   ├── Zero Customer PII in Prompts (Brief Metadata & Aggregates Only)
+│   ├── Exact Text Hash Matching against Pre-Approved DLT Templates
+│   └── Real Conversion Metrics from Databricks SQL (No Model Math)
+│
+└── 4. HUMAN GOVERNANCE & LAUNCH
+    ├── Unified Pre-Flight QA Report
+    └── Exclusive Human Launch Gate (0% Autonomous Launch Authority)
+    </pre>
+
+    <h2>2. End-to-End Hop-by-Hop Request Flow</h2>
+    <p>The exact journey of every campaign request from client submission to final launch:</p>
+    <ul>
+      <li><strong>Hop 1 (Client to Backend):</strong> React Portal on S3/CloudFront issues HTTPS POST request to FastAPI backend on AWS ECS Fargate in Mumbai VPC.</li>
+      <li><strong>Hop 2 (Backend to Database RAG):</strong> FastAPI queries Aurora PostgreSQL over private VPC endpoints to fetch 2-3 approved golden past templates for the product line.</li>
+      <li><strong>Hop 3 (Backend to Bedrock Mumbai):</strong> FastAPI invokes AWS Bedrock using India Geographic Inference Profile (<code>in.anthropic.claude-sonnet-5</code>). Compute routes between Mumbai (<code>ap-south-1</code>) and Hyderabad (<code>ap-south-2</code>) with Zero Data Retention (ZDR), returning structured JSON copy and Layout spec.</li>
+      <li><strong>Hop 4 (Backend to Chromium):</strong> Passes Layout JSON to Headless Chromium container in Mumbai VPC. Renders 1080x1080 PNG in &lt;400ms.</li>
+      <li><strong>Hop 5 (Renderer to S3):</strong> Stores PNG buffer in private S3 bucket with KMS CMK encryption; returns expiring pre-signed URL.</li>
+      <li><strong>Hop 6 (WhatsApp Submission):</strong> Submits template payload to Route Mobile via <code>POST /wba/template/create</code> (Bearer JWT). Listens to Meta status webhooks for real-time approval updates.</li>
+      <li><strong>Hop 7 (SMS DLT Whitelist Check):</strong> Computes SHA-256 hash of SMS copy and checks local Aurora DLT Whitelist Ledger (manually seeded with Vilpower approved IDs). If matched, marks DLT Whitelisted (Green). If new, outputs One-Click Vilpower Package for operator to submit with POC OTP.</li>
+      <li><strong>Hop 8 (WebEngage Spec):</strong> Formats Guided Execution Spec. Marketer copies to WebEngage. Portal reads back draft and runs SHA-256 diff.</li>
+      <li><strong>Hop 9 (Human Launch Gate):</strong> Authorized campaign manager inspects unified pre-flight QA report and clicks final Launch button.</li>
+    </ul>
+
+    <h2>3. Master Feasibility Scorecard: What is Possible vs. Not Possible</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Subsystem</th>
+          <th>Target Capability</th>
+          <th>Feasibility Status</th>
+          <th>Technical Reality & Solution</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>AWS Bedrock Mumbai</strong></td>
+          <td>Claude Sonnet 5, Opus 5, Haiku 4.5, GPT-5.6 Terra</td>
+          <td><strong>HIGH FEASIBILITY</strong></td>
+          <td>Supported via India Geographic Profiles routing between Mumbai (ap-south-1) and Hyderabad (ap-south-2). Zero Data Retention, RBI/DPDP compliant.</td>
+        </tr>
+        <tr>
+          <td><strong>AI Image Generation</strong></td>
+          <td>Stable Diffusion 3.5 / Nova Canvas in India</td>
+          <td><strong>NOT POSSIBLE IN INDIA</strong></td>
+          <td>No production image models exist in Indian AWS data centers. Solved via Headless Chromium in Mumbai VPC (&lt;400ms PNG rendering).</td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp BSP Template API</strong></td>
+          <td>Route Mobile / Infobip programmatic creation</td>
+          <td><strong>HIGH FEASIBILITY</strong></td>
+          <td>Route Mobile endpoint <code>POST /wba/template/create</code> (Bearer JWT auth) submits templates directly to Meta.</td>
+        </tr>
+        <tr>
+          <td><strong>WhatsApp Real-Time Status</strong></td>
+          <td>Real-time category check & status tracking</td>
+          <td><strong>HIGH FEASIBILITY</strong></td>
+          <td>Meta webhook <code>message_template_status_update</code> pushes status changes (APPROVED, REJECTED, CATEGORY_CHANGED) to portal via Server-Sent Events (SSE).</td>
+        </tr>
+        <tr>
+          <td><strong>Telecom DLT SMS API</strong></td>
+          <td>Automated SMS approval via direct telco API</td>
+          <td><strong>NOT POSSIBLE (TRAI MANDATE)</strong></td>
+          <td>TRAI mandates manual web portal login with SMS OTP sent to company POC + CAPTCHA. Solved via Portal Whitelist Ledger + manual POC entry.</td>
+        </tr>
+        <tr>
+          <td><strong>WebEngage Campaign Drafting</strong></td>
+          <td>Programmatic draft creation from scratch</td>
+          <td><strong>NOT POSSIBLE (PUBLIC API)</strong></td>
+          <td>Public REST API only triggers running campaigns. Solved via Guided Execution Package + One-Click copy + read-back diff.</td>
+        </tr>
+        <tr>
+          <td><strong>Databricks Analytics</strong></td>
+          <td>Read-only SQL metrics integration</td>
+          <td><strong>HIGH FEASIBILITY</strong></td>
+          <td>Direct connection to Databricks SQL Warehouse via PrivateLink. Pulls 100% deterministic numbers.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>4. The End-to-End Agent Ecosystem (Agents 01 through 08)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>Underlying Technology</th>
+          <th>Operational Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Agent 01: Content & Copy</strong></td>
+          <td>Claude Sonnet 5 (Mumbai ap-south-1)</td>
+          <td>Generates 3 copy variants (EN, HI, Hinglish) with strict character bounds and UTM tags.</td>
+        </tr>
+        <tr>
+          <td><strong>Agent 02: Creative Engine</strong></td>
+          <td>Headless Chromium in Mumbai VPC</td>
+          <td>Renders Layout JSON into pixel-perfect 1080x1080 PNG banners in &lt;400ms. Claude Vision QA checks contrast.</td>
+        </tr>
+        <tr>
+          <td><strong>Agent 03: WhatsApp Approval</strong></td>
+          <td>Dual-Model Consensus (Sonnet 5 + GPT-5.6)</td>
+          <td>Submits templates via Route Mobile / Infobip API and tracks real-time approval webhooks.</td>
+        </tr>
+        <tr>
+          <td><strong>Agent 04: SMS / DLT Compliance</strong></td>
+          <td>Claude Haiku 4.5 + SHA-256 Hashing</td>
+          <td>Matches text against pre-approved Vilpower DLT templates and calculates GSM-7 vs UCS-2 character credits.</td>
+        </tr>
+        <tr>
+          <td><strong>Agent 05: WebEngage Draft</strong></td>
+          <td>Claude Sonnet 5</td>
+          <td>Builds Guided Execution Specification and executes deterministic read-back diff to catch copy-paste mismatches.</td>
+        </tr>
+        <tr>
+          <td><strong>Agent 06: Debugging Agent</strong></td>
+          <td>Claude Sonnet 5</td>
+          <td>Analyzes vendor API error payloads (e.g. invalid phone, quota limits) and recommends corrective fixes.</td>
+        </tr>
+        <tr>
+          <td><strong>Agent 07: Analytics & Attribution</strong></td>
+          <td>Claude Sonnet 5 + Databricks SQL</td>
+          <td>Reads deterministic Lakehouse conversion metrics and auto-seeds top 10% campaigns into the content library.</td>
+        </tr>
+        <tr>
+          <td><strong>Agent 08: Calendar Planning</strong></td>
+          <td>Claude Opus 5 + OR Constraint Solver</td>
+          <td>Proposes monthly schedules balancing customer frequency caps (max 2 WhatsApp/wk) and channel budgets.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>5. Milestone-Driven Roadmap (Waves 0 through 5)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Wave</th>
+          <th>Focus Area</th>
+          <th>Milestone Deliverables</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Wave 0</strong></td>
+          <td>Foundations & Spikes</td>
+          <td>Golden eval dataset (50 past campaigns), Bedrock Mumbai setup, Route Mobile API validation, and DLT local ledger seeding.</td>
+        </tr>
+        <tr>
+          <td><strong>Wave 1</strong></td>
+          <td>The Portal & Content Engine (Current Focus)</td>
+          <td>Working Campaign Calendar Portal, brief ingestion with custom comments, Bedrock Content Agent, and headless PNG rendering.</td>
+        </tr>
+        <tr>
+          <td><strong>Wave 2</strong></td>
+          <td>WhatsApp & SMS Automation</td>
+          <td>Route Mobile API automated template submission, dual-model policy check, and WebEngage read-back diff verification.</td>
+        </tr>
+        <tr>
+          <td><strong>Wave 3</strong></td>
+          <td>Regional Breadth & Debugging</td>
+          <td>Full colloquial Hinglish and Hindi copy models, Push specs, and automated API Error Diagnostic Agent.</td>
+        </tr>
+        <tr>
+          <td><strong>Wave 4</strong></td>
+          <td>Databricks Lakehouse Loop</td>
+          <td>Lakehouse SQL connection, deterministic conversion reporting, and auto-seeding top 10% campaigns into library.</td>
+        </tr>
+        <tr>
+          <td><strong>Wave 5</strong></td>
+          <td>Calendar Planning Agent</td>
+          <td>Capacity-aware monthly schedule generator enforcing customer frequency caps and channel budget ceilings.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

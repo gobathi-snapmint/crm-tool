@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snapmint CRM Calendar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">S</div>
+      <div><div class="brand-name">Snapmint CRM</div><div class="brand-sub">Campaign calendar</div></div>
+    </div>
+    <nav class="nav">
+      <button class="nav-item active" data-view="calendar">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+        Calendar</button>
+      <button class="nav-item" data-view="templates">
+        <svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12z"/></svg>
+        WhatsApp templates <span class="nav-badge" id="navNeedsEdit" hidden></span></button>
+      <button class="nav-item" data-view="activity">
+        <svg viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg>
+        Activity</button>
+      <button class="nav-item" data-view="settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+        Settings</button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="mode-chip" id="modeChip">Simulation</div>
+      <div class="foot-note">Launch always happens in WebEngage, by a person.</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h1 id="pageTitle">Calendar</h1>
+        <div class="subtitle" id="pageSub"></div>
+      </div>
+      <div class="top-actions">
+        <span class="lock-pill" id="lockPill"></span>
+        <label class="btn btn-ghost" title="Import a calendar CSV">
+          <svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Import CSV
+          <input type="file" id="fileInput" accept=".csv" hidden>
+        </label>
+        <div class="menu-wrap">
+          <button class="btn btn-ghost" id="exportBtn"><svg viewBox="0 0 24 24"><path d="M12 21V9M7 14l5-5 5 5M5 3h14"/></svg> Export</button>
+          <div class="menu" id="exportMenu" hidden>
+            <a href="/api/export">Calendar CSV (same format)</a>
+            <a href="/api/export?wa=1">Calendar + WhatsApp columns</a>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="lockBtn"></button>
+      </div>
+    </header>
+
+    <section class="pipeline" id="pipeline"></section>
+
+    <!-- Calendar -->
+    <section class="view" id="view-calendar">
+      <div class="kpis" id="kpis"></div>
+      <div class="card">
+        <div class="date-strip" id="dateStrip"></div>
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="search" placeholder="Search segment, content, CTA…"></div>
+          <div class="seg-control" id="channelFilter"></div>
+          <label class="check"><input type="checkbox" id="expOnly"> Experiments only</label>
+          <div class="spacer"></div>
+          <button class="btn btn-ghost btn-sm" id="addRowBtn">+ Add campaign</button>
+        </div>
+        <div class="table-wrap">
+          <table class="table" id="calTable">
+            <thead><tr>
+              <th>Date</th><th>Time</th><th>Segment</th><th>Channel</th><th>Content</th>
+              <th class="num">Size</th><th>WhatsApp template</th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="pager" id="pager"></div>
+      </div>
+    </section>
+
+    <!-- Templates -->
+    <section class="view" id="view-templates" hidden>
+      <div class="callout info" id="tplIntro"></div>
+      <div class="card">
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="tplSearch" placeholder="Search template name or copy…"></div>
+          <div class="seg-control" id="statusFilter"></div>
+        </div>
+        <div class="table-wrap">
+          <table class="table" id="tplTable">
+            <thead><tr>
+              <th>#</th><th>Template</th><th>First send</th><th class="num">Rows</th><th class="num">Audience</th>
+              <th>Category</th><th>Vendor</th><th>Status</th><th></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Activity -->
+    <section class="view" id="view-activity" hidden>
+      <div class="card"><div class="timeline" id="activityList"></div></div>
+    </section>
+
+    <!-- Settings -->
+    <section class="view" id="view-settings" hidden>
+      <div class="settings-grid" id="settingsBody"></div>
+    </section>
+  </main>
+</div>
+
+<!-- Drawer -->
+<div class="scrim" id="scrim" hidden></div>
+<aside class="drawer" id="drawer" hidden>
+  <div class="drawer-head">
+    <div><div class="drawer-kicker" id="drawerKicker"></div><h2 id="drawerTitle"></h2></div>
+    <button class="icon-btn" id="drawerClose" aria-label="Close">✕</button>
+  </div>
+  <div class="tabs" id="drawerTabs"></div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-foot" id="drawerFoot"></div>
+</aside>
+
+<!-- Modal -->
+<div class="modal-scrim" id="modal" hidden>
+  <div class="modal">
+    <div class="modal-head"><h3 id="modalTitle"></h3><button class="icon-btn" id="modalClose">✕</button></div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot" id="modalFoot"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+<script src="app.js"></script>
+</body>
+</html>

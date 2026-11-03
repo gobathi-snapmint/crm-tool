@@ -1,6 +1,6 @@
 # CRM Campaign Calendar Portal: Feasibility, API Contracts, Architecture
 
-Status: November 2026. Code: [`portal/server.py`](../portal/server.py), [`portal/index.html`](../portal/index.html).
+Status: November 2026. Code: superseded by [`crm-portal/`](../crm-portal/README.md); this document keeps the vendor research.
 
 ## 1. Verdict at a glance
 

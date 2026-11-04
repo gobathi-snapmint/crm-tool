@@ -278,9 +278,23 @@ def default_template(row, cal, settings, names):
     }
 
 
+def empty_calendar():
+    return {"name": "", "year": 2026, "month": 11, "headers": [c for _, c in COLS], "rows": [],
+            "templates": [], "locked": False, "locked_at": "", "locked_by": "", "imported_at": ""}
+
+
 def load_calendar():
-    return read_json(CAL_FILE, {"name": "", "year": 2026, "month": 11, "headers": [c for _, c in COLS], "rows": [],
-                                "templates": [], "locked": False, "locked_at": "", "locked_by": "", "imported_at": ""})
+    cal = read_json(CAL_FILE, None)
+    if not isinstance(cal, dict):
+        return empty_calendar()
+    if "templates" not in cal or any("wa" in r or "days" in r for r in cal.get("rows", [])[:5]):
+        # data/ from the older framework-sheet portal: keep a copy, start fresh
+        os.replace(CAL_FILE, CAL_FILE + f".old-{int(time.time())}")
+        audit("calendar_migrated", reason="old portal format; backed up and reset")
+        return empty_calendar()
+    for k, v in empty_calendar().items():
+        cal.setdefault(k, v)
+    return cal
 
 
 def save_calendar(cal):
@@ -1073,15 +1087,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         super().__init__(*a, directory=STATIC, **kw)
 
     def log_message(self, fmt_, *args):
-        if args and "/api/calendar " not in str(args[0]):
+        if args and "/api/calendar " not in str(args[0]) and "/api/templates " not in str(args[0]):
             super().log_message(fmt_, *args)
+
+    def end_headers(self):
+        self.send_header("Cache-Control", "no-store")  # also static files: never let the browser run a stale app.js
+        super().end_headers()
 
     def send(self, code, obj, ctype="application/json", extra=None):
         body = obj if isinstance(obj, bytes) else json.dumps(obj, ensure_ascii=False).encode()
         self.send_response(code)
         self.send_header("Content-Type", ctype)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
         for k, v in (extra or {}).items():
             self.send_header(k, v)
         self.end_headers()

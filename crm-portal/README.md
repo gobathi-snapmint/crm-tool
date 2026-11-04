@@ -72,6 +72,12 @@ Fill these in under **Settings**. They are stored only in `crm-portal/data/setti
 | **WebEngage** | License code, REST API key (India DC `api.in.webengage.com`), the WSP name exactly as integrated, and a template endpoint if WebEngage provides one. |
 | **Webhooks** (optional) | A public HTTPS URL forwarding to `/webhooks/<vendor>`. Polling works without it. |
 
+## Troubleshooting
+- **Buttons or menus do nothing:** stop any old `server.py` (Ctrl+C), start it again, and hard-refresh the page (Cmd+Shift+R). The server now sends `Cache-Control: no-store`, so the browser can't keep an old `app.js`.
+- **"Could not load its data" banner:** the server isn't running or crashed. Check the terminal where `server.py` runs.
+- **Empty calendar after a fresh clone:** the calendar CSV isn't in Git. Use **Import CSV**, or put `nov_mkp_calendar_full_view_PLAN_v1.3.csv` in the repo root before the first start.
+- A `data/` folder from the older portal is backed up as `calendar.json.old-<time>` and replaced with an empty calendar on start.
+
 ## Files
 - `server.py`: API, CSV import/export, template library, validation, vendor and WebEngage adapters, the queue worker, the poller and webhooks
 - `static/index.html`, `static/styles.css`, `static/app.js`: the UI

@@ -105,6 +105,9 @@ const tplList = () => (S.cal?.templates || []).slice().sort((a, b) => (a.usage.f
 
 // ---------------------------------------------------------------- shell
 function render() {
+  $$(".nav-item").forEach((b) => b.classList.toggle("active", b.dataset.view === S.view));
+  $$(".view").forEach((v) => (v.hidden = v.id !== "view-" + S.view));
+  if (!S.cal || !S.settings) return showLoadError();
   renderShell();
   renderPipeline();
   if (S.view === "calendar") renderCalendar();
@@ -154,7 +157,35 @@ function renderPipeline() {
   $$(".stage", el).forEach((b) => (b.onclick = () => { S.tf.stage = b.dataset.stage; go("templates"); }));
 }
 
-function go(view) { S.view = view; render(); }
+function go(view) { S.view = view; closeDrawer(); render(); }
+
+function showLoadError() {
+  $("#pipeline").hidden = true;
+  $("#pageTitle").textContent = { calendar: "Campaign calendar", templates: "WhatsApp templates", activity: "Activity", settings: "Settings & integrations" }[S.view];
+  $("#pageSub").textContent = "";
+  const el = $("#view-" + S.view);
+  let box = $("#loadError");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "loadError";
+    box.className = "callout error";
+  }
+  box.innerHTML = `<b>The portal could not load its data from the server.</b> ${esc(S.loadError || "")}<br>
+    Check that <code>python3 crm-portal/server.py</code> is running in a terminal, then
+    <button class="btn btn-sm" id="retryLoad" style="margin-left:6px">Retry</button>`;
+  el.prepend(box);
+  $("#retryLoad").onclick = boot;
+}
+
+async function boot() {
+  try {
+    await loadAll();
+    $("#loadError")?.remove();
+  } catch (e) {
+    S.loadError = e.message;
+    render();
+  }
+}
 
 // ---------------------------------------------------------------- calendar
 function filteredRows() {
@@ -663,7 +694,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     } catch (err) { toast(err.message, "err"); }
     e.target.value = "";
   };
-  await loadAll();
+  await boot();
   setInterval(tick, 3000);
   setInterval(() => { tick.force = true; }, 20000);
 });
